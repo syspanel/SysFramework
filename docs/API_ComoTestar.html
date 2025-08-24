@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste do Sistema de API - SysFramework</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.3/css/bootstrap.min.css">
+    <style>
+        body {
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        pre {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        code {
+            background: #e9ecef;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+        .example {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Como Testar o Sistema de API do SysFramework</h1>
+
+        <section>
+            <h2>1. Testes Manuais com Ferramentas de API</h2>
+
+            <div class="example">
+                <h3>a. Postman</h3>
+                <ol>
+                    <li><strong>Instale o Postman</strong>: Baixe e instale o Postman <a href="https://www.postman.com/downloads/" target="_blank">aqui</a>.</li>
+                    <li><strong>Crie uma Nova Requisição</strong>:
+                        <ul>
+                            <li>Abra o Postman e clique em “New” para criar uma nova requisição.</li>
+                            <li>Escolha o método HTTP (GET, POST, PUT, DELETE) conforme sua rota.</li>
+                            <li>Insira a URL da sua API, como <code>http://localhost/api/users</code>.</li>
+                            <li>Adicione quaisquer parâmetros de consulta, cabeçalhos, ou corpo conforme necessário.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Envie a Requisição</strong>: Clique no botão “Send” para enviar a requisição e veja a resposta retornada.</li>
+                    <li><strong>Verifique a Resposta</strong>: Verifique o status da resposta, corpo da resposta e cabeçalhos para garantir que tudo está funcionando conforme esperado.</li>
+                </ol>
+            </div>
+
+            <div class="example">
+                <h3>b. cURL</h3>
+                <p>cURL é uma ferramenta de linha de comando para fazer requisições HTTP.</p>
+                <pre><code># Testar rota GET
+curl -X GET http://localhost/api/users
+
+# Testar rota POST
+curl -X POST http://localhost/api/users -d "name=John&email=john@example.com"
+
+# Testar rota PUT
+curl -X PUT http://localhost/api/users/1 -d "name=John Updated"
+
+# Testar rota DELETE
+curl -X DELETE http://localhost/api/users/1
+                </code></pre>
+            </div>
+        </section>
+
+        <section>
+            <h2>2. Testes Automatizados com PHPUnit</h2>
+
+            <div class="example">
+                <h3>a. Configuração do PHPUnit</h3>
+                <ol>
+                    <li><strong>Instale o PHPUnit</strong>: Adicione o PHPUnit ao seu projeto via Composer se ainda não estiver instalado.
+                        <pre><code>composer require --dev phpunit/phpunit</code></pre>
+                    </li>
+                    <li><strong>Crie um Arquivo de Teste</strong>: Adicione um arquivo de teste para suas APIs em <code>tests/Feature/ApiTest.php</code>.</li>
+                </ol>
+            </div>
+
+            <div class="example">
+                <h3>b. Exemplo de Teste</h3>
+                <pre><code>&lt;?php
+
+use PHPUnit\Framework\TestCase;
+
+class ApiUserTest extends TestCase
+{
+    public function testGetUsers()
+    {
+        $response = $this->makeRequest('GET', '/api/users');
+        $this->assertEquals(200, $response['status']);
+        $this->assertJson($response['body']);
+    }
+
+    public function testCreateUser()
+    {
+        $data = ['name' => 'John Doe', 'email' => 'john@example.com'];
+        $response = $this->makeRequest('POST', '/api/users', $data);
+        $this->assertEquals(201, $response['status']);
+        $this->assertJson($response['body']);
+    }
+
+    private function makeRequest($method, $uri, $data = [])
+    {
+        // Simulação de requisição, você deve ajustar conforme sua implementação
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, "http://localhost" . $uri);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
+        if ($method == 'POST' || $method == 'PUT') {
+            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+        }
+        $response = curl_exec($ch);
+        $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        return ['status' => $status, 'body' => $response];
+    }
+}
+                </code></pre>
+                <p><strong>Execute os Testes</strong>:
+                    <pre><code>vendor/bin/phpunit --bootstrap vendor/autoload.php tests/Feature/ApiUserTest.php</code></pre>
+                </p>
+            </div>
+        </section>
+
+        <section>
+            <h2>3. Testes com Scripts Personalizados</h2>
+
+            <div class="example">
+                <h3>Exemplo de Script de Teste</h3>
+                <pre><code>&lt;?php
+
+$ch = curl_init();
+
+curl_setopt($ch, CURLOPT_URL, "http://localhost/api/users");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+$response = curl_exec($ch);
+$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+curl_close($ch);
+
+echo "Status: $httpCode\n";
+echo "Response: $response\n";
+                </code></pre>
+            </div>
+        </section>
+
+        <section>
+            <h2>4. Testes no Navegador</h2>
+            <p>Para rotas GET simples, você pode testar diretamente no navegador ou usando uma ferramenta como o <strong>Insomnia</strong>.</p>
+        </section>
+
+        <section>
+            <h2>5. Testes com Ferramentas de Integração Contínua</h2>
+            <p>Se você estiver usando um pipeline de CI/CD, configure o PHPUnit ou outros testes automatizados para rodar como parte do processo de integração contínua.</p>
+        </section>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.3/js/bootstrap.min.js"></script>
+</body>
+</html>

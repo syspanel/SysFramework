@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorial de Funções PHP</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 1rem;
+            text-align: center;
+        }
+        main {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        section {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            margin-top: 0;
+            color: #007bff;
+        }
+        code {
+            background-color: #e9ecef;
+            border: 1px solid #ced4da;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-size: 1.2rem;
+            color: #495057;
+        }
+        pre {
+            background-color: #343a40;
+            color: #f8f9fa;
+            padding: 1rem;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin: 0;
+            font-size: 1.2rem;
+        }
+        pre code {
+            color: #000000;
+        }
+        .highlight {
+            background-color: #d1ecf1;
+            border-left: 5px solid #17a2b8;
+            padding: 0.5rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+        footer {
+            background-color: #343a40;
+            color: #fff;
+            padding: 1rem;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Tutorial de Funções PHP</h1>
+    </header>
+    <main>
+        <section>
+            <h2>Função `sanitizeMiddleware`</h2>
+            <p>Esta função sanitiza os dados de entrada utilizando a classe <code>SysSanitize</code> antes de processá-los. É útil para proteger seu aplicativo contra injeções e ataques de XSS.</p>
+            <pre><code>&lt;?php
+use Core\SysSanitize;
+function sanitizeMiddleware() {
+    $_POST = SysSanitize::sanitize($_POST);
+    $_GET = SysSanitize::sanitize($_GET);
+    $_REQUEST = SysSanitize::sanitize($_REQUEST);
+}
+#sanitizeMiddleware();
+?&gt;</code></pre>
+        </section>
+
+        <section>
+            <h2>Função `loadConfig`</h2>
+            <p>Carrega arquivos de configuração no formato <code>.php</code> ou <code>.ini</code> e retorna um array associativo com as configurações.</p>
+            <pre><code>&lt;?php
+function loadConfig($filePath) {
+    if (!file_exists($filePath)) {
+        throw new Exception("Config file not found: $filePath");
+    }
+    
+    $ext = pathinfo($filePath, PATHINFO_EXTENSION);
+    
+    switch ($ext) {
+        case 'php':
+            return include $filePath;
+        case 'ini':
+            return parse_ini_file($filePath, true);
+        default:
+            throw new Exception("Unsupported config file format: $ext");
+    }
+}
+// Uso:
+// $config = loadConfig('/path/to/config.php');
+?&gt;</code></pre>
+        </section>
+
+        <section>
+            <h2>Função `sanitize`</h2>
+            <p>Limpa e escapa inputs de usuários para prevenir XSS e outras injeções.</p>
+            <pre><code>&lt;?php
+function sanitize($data) {
+    return htmlspecialchars(strip_tags(trim($data)), ENT_QUOTES, 'UTF-8');
+}
+// Uso:
+// $userInput = "&lt;script&gt;alert('Hacked!');&lt;/script&gt;";
+// $cleanInput = sanitize($userInput);  // Output: alert('Hacked!');
+?&gt;</code></pre>
+        </section>
+
+        <section>
+            <h2>Função `redirect`</h2>
+            <p>Redireciona o usuário para uma nova URL com um código de status HTTP opcional.</p>
+            <pre><code>&lt;?php
+function redirect($url, $statusCode = 302) {
+    header("Location: $url", true, $statusCode);
+    exit();
+}
+// Uso:
+// redirect('/home');
+?&gt;</code></pre>
+        </section>
+
+        <section>
+            <h2>Função `logError`</h2>
+            <p>Registra mensagens de erro em um arquivo de log com um timestamp.</p>
+            <pre><code>&lt;?php
+function logError($message, $file = 'error.log') {
+    $timestamp = date('Y-m-d H:i:s');
+    $message = "[{$timestamp}] ERROR: {$message}\n";
+    file_put_contents($file, $message, FILE_APPEND);
+}
+// Uso:
+// logError('Database connection failed');
+?&gt;</code></pre>
+        </section>
+
+        <section>
+            <h2>Função `baseUrl`</h2>
+            <p>Gera URLs baseadas no caminho fornecido.</p>
+            <pre><code>&lt;?php
+function baseUrl($path = '') {
+    $baseUrl = "http://".$_SERVER['HTTP_HOST']."/";
+    return $baseUrl . ltrim($path, '/');
+}
+// Uso:
+// echo baseUrl('assets/css/style.css');  // Output: http://localhost/assets/css/style.css
+?&gt;</code></pre>
+        </section>
+
+        <section>
+            <h2>Função `startSecureSession`</h2>
+            <p>Inicia uma sessão segura, garantindo que apenas cookies sejam usados para manter a sessão e configurando parâmetros de segurança.</p>
+            <pre><code>&lt;?php
+function startSecureSession() {
+    if (session_status() == PHP_SESSION_NONE) {
+        ini_set('session.use_only_cookies', 1);
+        $secure = isset($_SERVER['HTTPS']);
+        session_set_cookie_params(0, '/', '', $secure, true);
+        session_start();
+    }
+}
+// Uso:
+// startSecureSession();
+// $_SESSION['user_id'] = 1;
+?&gt;</code></pre>
+        </section>
+
+        <section>
+            <h2>Função `formatDate`</h2>
+            <p>Formata uma data no formato especificado.</p>
+            <pre><code>&lt;?php
+function formatDate($date, $format = 'd/m/Y H:i') {
+    $timestamp = strtotime($date);
+    return date($format, $timestamp);
+}
+// Uso:
+// echo formatDate('2025-08-30 14:30:00');  // Output: 30/08/2025 14:30
+?&gt;</code></pre>
+        </section>
+
+        <section>
+            <h2>Função `loadView`</h2>
+            <p>Carrega e renderiza uma view a partir do nome do arquivo.</p>
+            <pre><code>&lt;?php
+function loadView($viewName, $data = []) {
+    $viewFile = __DIR__ . '/../views/' . $viewName . '.php';
+    if (file_exists($viewFile)) {
+        extract($data);
+        include $viewFile;
+    } else {
+        throw new Exception("View not found: $viewName");
+    }
+}
+// Uso:
+// loadView('header', ['title' => 'Home Page']);
+?&gt;</code></pre>
+        </section>
+
+        <section>
+            <h2>Função `renderView`</h2>
+            <p>Renderiza uma view utilizando o Twig template engine.</p>
+            <pre><code>&lt;?php
+function renderView($templateName, $data = []) {
+    // Obtém o ambiente Twig
+    $twig = getTwigEnvironment();
+
+    // Renderiza o template com os dados fornecidos
+    echo $twig->render($templateName . '.html.twig', $data);
+}
+?&gt;</code></pre>
+        </section>
+
+        <section>
+            <h2>Funções `encrypt` e `decrypt`</h2>
+            <p>Criptografa e descriptografa dados usando o método AES-256-CBC.</p>
+            <pre><code>&lt;?php
+function encrypt($data, $key) {
+    return openssl_encrypt($data, 'aes-256-cbc', $key, 0, str_repeat('0', 16));
+}
+
+function decrypt($data, $key) {
+    return openssl_decrypt($data, 'aes-256-cbc', $key, 0, str_repeat('0', 16));
+}
+// Uso:
+// $encrypted = encrypt('secret', 'mysecretkey');
+// echo decrypt($encrypted, 'mysecretkey');  // Output: secret
+?&gt;</code></pre>
+        </section>
+
+        <section>
+            <h2>Função `autoload`</h2>
+            <p>Carrega automaticamente classes a partir do diretório <code>/core/</code>.</p>
+            <pre><code>&lt;?php
+function autoload($className) {
+    $classPath = __DIR__ . '/../core/' . $className . '.php';
+    if (file_exists($classPath)) {
+        require_once $classPath;
+    }
+}
+
+spl_autoload_register('autoload');
+?&gt;</code></pre>
+        </section>
+
+        <section>
+            <h2>Função `formatCurrency`</h2>
+            <p>Formata valores monetários com símbolos de moeda e separadores.</p>
+            <pre><code>&lt;?php
+function formatCurrency($amount, $currencySymbol = 'R$', $decimals = 2, $decimalSeparator = ',', $thousandsSeparator = '.') {
+    if (!is_numeric($amount)) {
+        throw new InvalidArgumentException("The amount must be a number.");
+    }
+
+    $formattedAmount = number_format($amount, $decimals, $decimalSeparator, $thousandsSeparator);
+    return $currencySymbol . ' ' . $formattedAmount;
+}
+// Uso:
+// Valor em reais com 2 casas decimais
+// echo formatCurrency(2500); // Output: R$ 2.500,00
+// Valor em dólares com 2 casas decimais e separadores americanos
+// echo formatCurrency(2500, '$', 2, '.', ','); // Output: $ 2,500.00
+// Valor em euros sem casas decimais
+// echo formatCurrency(2500, '€', 0, ',', '.'); // Output: € 2.500
+// Valor em reais sem separador de milhares
+// echo formatCurrency(2500.75, 'R$', 2, ',', ''); // Output: R$ 2500,75
+?&gt;</code></pre>
+        </section>
+
+        <section>
+            <h2>Função `formatToTwoDecimals`</h2>
+            <p>Formata um número para ter exatamente duas casas decimais.</p>
+            <pre><code>&lt;?php
+function formatToTwoDecimals($number) {
+    if (!is_numeric($number)) {
+        throw new InvalidArgumentException("The input must be a number.");
+    }
+
+    return number_format($number, 2, '.', '');
+}
+// Uso:
+// Formatar um número com muitas casas decimais
+// echo formatToTwoDecimals(45.6789);  // Output: 45.68
+// Formatar um número inteiro
+// echo formatToTwoDecimals(45);  // Output: 45.00
+// Formatar um número com uma casa decimal
+// echo formatToTwoDecimals(45.6);  // Output: 45.60
+// Formatar um número já com duas casas decimais
+// echo formatToTwoDecimals(45.60);  // Output: 45.60
+?&gt;</code></pre>
+        </section>
+
+        <section>
+            <h2>Função `daysBetweenDates`</h2>
+            <p>Calcula o número de dias entre duas datas.</p>
+            <pre><code>&lt;?php
+function daysBetweenDates($date1, $date2) {
+    // Converte as datas para objetos DateTime
+    $date1 = new DateTime($date1);
+    $date2 = new DateTime($date2);
+
+    // Calcula a diferença entre as duas datas
+    $interval = $date1->diff($date2);
+
+    // Retorna o número de dias como um inteiro
+    return abs($interval->days);
+}
+// Uso:
+// echo daysBetweenDates('2025-08-01', '2025-08-30');  // Output: 29
+// echo daysBetweenDates('2025-08-30', '2025-08-01');  // Output: 29 (ordem das datas não importa)
+?&gt;</code></pre>
+        </section>
+
+        <section>
+            <h2>Função `setExceptionHandlerWithLogging`</h2>
+            <p>Define um manipulador de erros e exceções com logging.</p>
+            <pre><code>&lt;?php
+function setExceptionHandlerWithLogging($logFile = '/logs/apperror.log') {
+    // Define um manipulador de erros personalizado
+    set_error_handler(function($severity, $message, $file, $line) use ($logFile) {
+        // Verifica se o erro está incluído no nível de relatório de erros
+        if (error_reporting() & $severity) {
+            // Cria uma mensagem de erro
+            $errorMessage = sprintf(
+                "Error: [Severity %d] %s in %s on line %d",
+                $severity,
+                $message,
+                $file,
+                $line
+            );
+
+            // Registra o erro em um arquivo de log
+            file_put_contents(__DIR__ . $logFile, $errorMessage . PHP_EOL, FILE_APPEND);
+
+            // Lança uma exceção com o erro
+            throw new ErrorException($message, 0, $severity, $file, $line);
+        }
+    });
+
+    // Define um manipulador de exceções padrão
+    set_exception_handler(function($exception) use ($logFile) {
+        // Cria uma mensagem de exceção
+        $exceptionMessage = sprintf(
+            "Exception: %s in %s on line %d",
+            $exception->getMessage(),
+            $exception->getFile(),
+            $exception->getLine()
+        );
+
+        // Registra a exceção em um arquivo de log
+        file_put_contents(__DIR__ . $logFile, $exceptionMessage . PHP_EOL, FILE_APPEND);
+
+        // Exibe uma mensagem amigável ao usuário
+        echo "Ocorreu um erro no sistema. Por favor, tente novamente mais tarde.";
+        exit();
+    });
+}
+
+// Configura o manipulador de erros e exceções
+setExceptionHandlerWithLogging();
+?&gt;</code></pre>
+        </section>
+
+        <section>
+            <h2>Função `minutesBetweenEvents`</h2>
+            <p>Calcula o número de minutos entre dois eventos.</p>
+            <pre><code>&lt;?php
+function minutesBetweenEvents($event1, $event2) {
+    // Converte as datas e horários para objetos DateTime
+    $dateTime1 = new DateTime($event1);
+    $dateTime2 = new DateTime($event2);
+
+    // Calcula a diferença entre os dois objetos DateTime
+    $interval = $dateTime1->diff($dateTime2);
+
+    // Converte a diferença para minutos
+    $minutes = ($interval->days * 24 * 60) + ($interval->h * 60) + $interval->i;
+
+    // Retorna a diferença em minutos
+    return $minutes;
+}
+// Uso
+$event1 = '2025-08-30 14:00:00';
+$event2 = '2025-08-30 16:30:00';
+
+// echo minutesBetweenEvents($event1, $event2);  // Output: 150
+?&gt;</code></pre>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2025 SysFramework. Todos os direitos reservados.</p>
+    </footer>
+</body>
+</html>

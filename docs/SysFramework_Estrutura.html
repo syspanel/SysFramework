@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SysFramework - Estrutura</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            color: #333;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        pre {
+            background: #333;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        h2 {
+            color: #007BFF;
+        }
+        p {
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>SysFramework - Estrutura</h1>
+        <p>Abaixo está a estrutura do SysFramework com explicações detalhadas para cada diretório e arquivo.</p>
+
+        <pre>
+SysFramework
+├── app/
+│   ├── Controllers/
+│   ├── Models/
+│   ├── Middlewares/
+│   ├── Console/
+│   ├── Services/
+│   ├── UseCases/
+│   ├── Events/
+│   └── Listeners/
+├── config/
+│   ├── bootstrap.php
+│   ├── paths.php
+│   ├── settings.php
+│   └── database.php
+├── core/
+│   ├── SysTemplateEngine.php
+│   ├── SysRouter.php
+│   ├── SysORM.php
+│   ├── SysModel.php
+│   ├── SysController.php
+│   ├── helpers/
+│   └── utils/
+├── public/
+│   ├── index.php
+│   └── assets/
+├── resources/
+│   └── views/
+├── logs/
+│   └── app.log
+├── caches/
+│   └── template.php
+├── database/
+│   ├── migrations/
+│   └── seeders/
+├── tests/
+│   ├── Unit/
+│   ├── Integration/
+│   └── Feature/
+├── .env
+├── cli.php
+└── composer.json
+        </pre>
+
+        <h2>Explicações Detalhadas</h2>
+
+        <h3>app/</h3>
+        <p>Este diretório contém a lógica principal da aplicação.</p>
+        <ul>
+            <li><strong>Controllers/</strong>: Armazena os controladores, que gerenciam as requisições HTTP e retornam respostas apropriadas.</li>
+            <li><strong>Models/</strong>: Contém os modelos que representam a estrutura de dados e interagem com o banco de dados.</li>
+            <li><strong>Middlewares/</strong>: Contém middlewares que processam as requisições antes de chegar ao controlador ou após a resposta.</li>
+            <li><strong>Console/</strong>: Armazena comandos que podem ser executados a partir da linha de comando.</li>
+            <li><strong>Services/</strong>: Implementa a lógica de negócios, separando-a dos controladores.</li>
+            <li><strong>UseCases/</strong>: Define casos de uso específicos da aplicação, encapsulando processos de negócios complexos.</li>
+            <li><strong>Events/</strong>: Define eventos que podem ser disparados dentro da aplicação.</li>
+            <li><strong>Listeners/</strong>: Contém ouvintes que respondem a eventos específicos, permitindo uma arquitetura orientada a eventos.</li>
+        </ul>
+
+        <h3>config/</h3>
+        <p>Armazena os arquivos de configuração da aplicação.</p>
+        <ul>
+            <li><strong>bootstrap.php</strong>: Script de inicialização da aplicação, carregando configurações essenciais.</li>
+            <li><strong>paths.php</strong>: Define os caminhos utilizados na aplicação, como diretórios de recursos.</li>
+            <li><strong>settings.php</strong>: Contém configurações gerais da aplicação, como modo de depuração.</li>
+            <li><strong>database.php</strong>: Configurações de conexão e opções do banco de dados.</li>
+        </ul>
+
+        <h3>core/</h3>
+        <p>Contém o núcleo do framework, onde estão as classes e utilitários principais.</p>
+        <ul>
+            <li><strong>SysTemplateEngine.php</strong>: Classe responsável pelo mecanismo de templates.</li>
+            <li><strong>SysRouter.php</strong>: Classe que gerencia as rotas da aplicação.</li>
+            <li><strong>SysORM.php</strong>: Sistema de mapeamento objeto-relacional para interagir com o banco de dados.</li>
+            <li><strong>SysModel.php</strong>: Classe base para os modelos, oferecendo funcionalidades padrão.</li>
+            <li><strong>SysController.php</strong>: Classe base para os controladores, oferecendo métodos utilitários comuns.</li>
+            <li><strong>helpers/</strong>: Funções auxiliares que podem ser usadas em várias partes da aplicação.</li>
+            <li><strong>utils/</strong>: Utilitários e ferramentas que auxiliam no funcionamento do framework.</li>
+        </ul>
+
+        <h3>public/</h3>
+        <p>Diretório acessível publicamente. Contém arquivos que podem ser servidos diretamente pelo servidor web.</p>
+        <ul>
+            <li><strong>index.php</strong>: Ponto de entrada principal da aplicação. Todas as requisições passam por este arquivo.</li>
+            <li><strong>assets/</strong>: Armazena recursos estáticos como CSS, JavaScript, e imagens.</li>
+        </ul>
+
+        <h3>resources/</h3>
+        <p>Contém arquivos de recursos que não são acessíveis diretamente, mas usados na aplicação.</p>
+        <ul>
+            <li><strong>views/</strong>: Armazena os templates e views que serão renderizados pela aplicação.</li>
+        </ul>
+
+        <h3>logs/</h3>
+        <p>Armazena arquivos de log da aplicação, úteis para depuração e monitoramento.</p>
+        <ul>
+            <li><strong>app.log</strong>: Arquivo de log principal da aplicação, onde são registradas mensagens de erro, avisos, etc.</li>
+        </ul>
+
+        <h3>caches/</h3>
+        <p>Diretório para armazenar arquivos de cache, melhorando o desempenho da aplicação.</p>
+        <ul>
+            <li><strong>template.php</strong>: Arquivo de cache de templates, permitindo renderização mais rápida.</li>
+        </ul>
+
+        <h3>database/</h3>
+        <p>Contém arquivos relacionados ao banco de dados.</p>
+        <ul>
+            <li><strong>migrations/</strong>: Armazena scripts de migração do banco de dados, gerenciando alterações no esquema.</li>
+            <li><strong>seeders/</strong>: Scripts para popular o banco de dados com dados iniciais ou de teste.</li>
+        </ul>
+
+        <h3>tests/</h3>
+        <p>Diretório dedicado para testes automatizados da aplicação.</p>
+        <ul>
+            <li><strong>Unit/</strong>: Contém testes unitários que verificam funcionalidades específicas de classes ou métodos.</li>
+            <li><strong>Integration/</strong>: Armazena testes de integração que verificam como diferentes partes do sistema funcionam juntas.</li>
+            <li><strong>Feature/</strong>: Testes de funcionalidade completos que simulam o comportamento do usuário.</li>
+        </ul>
+
+        <h3>Outros Arquivos</h3>
+        <ul>
+            <li><strong>.env</strong>: Arquivo de variáveis de ambiente, contendo configurações que variam entre diferentes ambientes (desenvolvimento, produção).</li>
+            <li><strong>cli.php</strong>: Script de entrada para comandos CLI (Command Line Interface) específicos da aplicação.</li>
+            <li><strong>composer.json</strong>: Arquivo de configuração do Composer, gerenciando as dependências da aplicação.</li>
+        </ul>
+    </div>
+</body>
+</html>

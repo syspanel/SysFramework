@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorial da Classe Validations</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background: #f4f4f4;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+        }
+        header {
+            background: #333;
+            color: #fff;
+            padding-top: 30px;
+            min-height: 70px;
+            border-bottom: #ccc 1px solid;
+        }
+        header h1 {
+            text-align: center;
+            margin: 0;
+        }
+        .content {
+            margin: 20px 0;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #333;
+        }
+        pre {
+            background: #eee;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        code {
+            background: #f4f4f4;
+            border: 1px solid #ddd;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+        .example {
+            background: #f9f9f9;
+            border-left: 4px solid #007bff;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        .example h3 {
+            margin-top: 0;
+        }
+        footer {
+            text-align: center;
+            padding: 10px;
+            background: #333;
+            color: #fff;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Tutorial da Classe Validations</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="content">
+            <h2>Introdução</h2>
+            <p>A classe <code>Validations</code> oferece uma maneira simples e eficiente de validar dados em seu aplicativo PHP. Este tutorial irá guiá-lo através da implementação e uso desta classe em seu projeto, incluindo a integração com o BladeOne.</p>
+
+            <h2>1. Classe `Validations`</h2>
+            <p>A classe <code>Validations</code> é responsável por validar diferentes tipos de dados e armazenar erros e dados antigos. Abaixo está o código completo da classe:</p>
+            
+            <pre><code>&lt;?php
+
+namespace Core\Validations;
+
+class Validations
+{
+    protected static $errors = [];
+    protected static $oldData = [];
+
+    public static function required($field, $value, $message = null)
+    {
+        if (empty($value)) {
+            self::$errors[$field] = $message ?? "O campo $field é obrigatório.";
+            return false;
+        }
+        self::$oldData[$field] = $value;
+        return true;
+    }
+
+    public static function email($field, $value, $message = null)
+    {
+        if (filter_var($value, FILTER_VALIDATE_EMAIL) === false) {
+            self::$errors[$field] = $message ?? "O campo $field deve ser um e-mail válido.";
+            return false;
+        }
+        self::$oldData[$field] = $value;
+        return true;
+    }
+
+    public static function integer($field, $value, $message = null)
+    {
+        if (filter_var($value, FILTER_VALIDATE_INT) === false) {
+            self::$errors[$field] = $message ?? "O campo $field deve ser um número inteiro.";
+            return false;
+        }
+        self::$oldData[$field] = $value;
+        return true;
+    }
+
+    public static function minLength($field, $value, $min, $message = null)
+    {
+        if (strlen($value) < $min) {
+            self::$errors[$field] = $message ?? "O campo $field deve ter no mínimo $min caracteres.";
+            return false;
+        }
+        self::$oldData[$field] = $value;
+        return true;
+    }
+
+    public static function maxLength($field, $value, $max, $message = null)
+    {
+        if (strlen($value) > $max) {
+            self::$errors[$field] = $message ?? "O campo $field deve ter no máximo $max caracteres.";
+            return false;
+        }
+        self::$oldData[$field] = $value;
+        return true;
+    }
+
+    public static function pattern($field, $value, $pattern, $message = null)
+    {
+        if (!preg_match($pattern, $value)) {
+            self::$errors[$field] = $message ?? "O campo $field não corresponde ao padrão esperado.";
+            return false;
+        }
+        self::$oldData[$field] = $value;
+        return true;
+    }
+
+    public static function same($field, $value, $expected, $message = null)
+    {
+        if ($value !== $expected) {
+            self::$errors[$field] = $message ?? "O campo $field deve ser igual a $expected.";
+            return false;
+        }
+        self::$oldData[$field] = $value;
+        return true;
+    }
+
+    public static function phone($field, $value, $message = null)
+    {
+        if (!preg_match('/^\+?[0-9]{10,15}$/', $value)) {
+            self::$errors[$field] = $message ?? "O campo $field deve ser um número de telefone válido.";
+            return false;
+        }
+        self::$oldData[$field] = $value;
+        return true;
+    }
+
+    public static function url($field, $value, $message = null)
+    {
+        if (filter_var($value, FILTER_VALIDATE_URL) === false) {
+            self::$errors[$field] = $message ?? "O campo $field deve ser uma URL válida.";
+            return false;
+        }
+        self::$oldData[$field] = $value;
+        return true;
+    }
+
+    public static function check()
+    {
+        return [
+            'errors' => self::$errors,
+            'oldData' => self::$oldData,
+        ];
+    }
+}
+&lt;/code&gt;</pre>
+
+            <h2>2. Processamento do Formulário</h2>
+            <p>A seguir está o código para processar o formulário e usar a classe <code>Validations</code>:</p>
+            
+            <pre><code>&lt;?php
+
+require 'vendor/autoload.php'; // Inclua o autoload do Composer
+
+use Core\Validations\Validations;
+use eftec\bladeone\BladeOne;
+
+$views = __DIR__ . '/views'; // Pasta onde estão seus arquivos Blade
+$cache = __DIR__ . '/cache'; // Pasta para cache do Blade
+$blade = new BladeOne($views, $cache, BladeOne::MODE_DEBUG);
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $result = [
+        'errors' => [],
+        'oldData' => []
+    ];
+
+    Validations::required('nome', $_POST['nome']);
+    Validations::email('email', $_POST['email']);
+    Validations::minLength('senha', $_POST['senha'], 8);
+
+    $result = Validations::check();
+
+    if (!empty($result['errors'])) {
+        echo $blade->run("formulario", $result);
+        exit;
+    }
+
+    echo "Formulário enviado com sucesso!";
+}
+&lt;/code&gt;</pre>
+
+            <h2>3. Template BladeOne</h2>
+            <p>A seguir está o código para o template BladeOne que exibe o formulário e mensagens de erro:</p>
+            
+            <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="pt-BR"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title>Formulário&lt;/title&gt;
+    &lt;style&gt;
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .error {
+            color: red;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;form action="processa_form.php" method="POST"&gt;
+        &lt;div class="form-group"&gt;
+            &lt;label for="nome"&gt;Nome&lt;/label&gt;
+            &lt;input type="text" id="nome" name="nome" value="{{ oldData['nome'] ?? '' }}"&gt;
+            @if(isset(errors['nome']))
+                &lt;span class="error"&gt;{{ errors['nome'] }}&lt;/span&gt;
+            @endif
+        &lt;/div&gt;
+
+        &lt;div class="form-group"&gt;
+            &lt;label for="email"&gt;E-mail&lt;/label&gt;
+            &lt;input type="email" id="email" name="email" value="{{ oldData['email'] ?? '' }}"&gt;
+            @if(isset(errors['email']))
+                &lt;span class="error"&gt;{{ errors['email'] }}&lt;/span&gt;
+            @endif
+        &lt;/div&gt;
+
+        &lt;div class="form-group"&gt;
+            &lt;label for="senha"&gt;Senha&lt;/label&gt;
+            &lt;input type="password" id="senha" name="senha"&gt;
+            @if(isset(errors['senha']))
+                &lt;span class="error"&gt;{{ errors['senha'] }}&lt;/span&gt;
+            @endif
+        &lt;/div&gt;
+
+        &lt;button type="submit"&gt;Enviar&lt;/button&gt;
+    &lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+&lt;/code&gt;</pre>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Tutorial de Classe Validations</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorial Completo do Blade Templating Engine</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        h1, h2, h3 {
+            color: #4CAF50;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        .directive {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-left: 5px solid #4CAF50;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .directive code {
+            background-color: #e7e7e7;
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-size: 1.1em;
+        }
+        .directive pre {
+            background-color: #272822;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .example {
+            background-color: #e7f3fe;
+            border-left: 5px solid #2196F3;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 4px;
+        }
+        .example code {
+            color: #c7254e;
+            background-color: #f9f2f4;
+        }
+        footer {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Tutorial Completo do Blade Templating Engine</h1>
+    <p>Um guia abrangente para entender e usar o Blade com exemplos detalhados.</p>
+</header>
+
+<div class="container">
+
+    <h2>Introdução</h2>
+    <p>Blade é um motor de template poderoso e fácil de usar, incluído no Laravel. Ele oferece uma sintaxe expressiva e recursos avançados para facilitar a criação de views dinâmicas e reutilizáveis.</p>
+
+    <div class="directive">
+        <h3>@extends</h3>
+        <p>A diretiva <code>@extends</code> permite que você defina um layout base que outras views podem "herdar".</p>
+        <pre><code>&#64;extends('layouts.master')</code></pre>
+        <div class="example">
+            <p><strong>Exemplo:</strong> Um layout base <code>layouts/master.blade.php</code> pode ser estendido em outras views:</p>
+            <pre><code>&#64;extends('layouts.master')</code></pre>
+        </div>
+    </div>
+
+    <div class="directive">
+        <h3>@section e @endsection</h3>
+        <p>A diretiva <code>@section</code> define uma seção de conteúdo que pode ser inserida no layout pai.</p>
+        <pre><code>&#64;section('content')
+    &lt;h1&gt;Título da Página&lt;/h1&gt;
+&#64;endsection</code></pre>
+        <div class="example">
+            <p><strong>Exemplo:</strong> Defina conteúdo específico em uma seção:</p>
+            <pre><code>&#64;extends('layouts.master')
+
+&#64;section('content')
+    &lt;h1&gt;Título da Página&lt;/h1&gt;
+    &lt;p&gt;Este é o conteúdo da página.&lt;/p&gt;
+&#64;endsection</code></pre>
+        </div>
+    </div>
+
+    <div class="directive">
+        <h3>@yield</h3>
+        <p>A diretiva <code>@yield</code> é usada dentro de layouts para indicar onde o conteúdo de uma seção deve ser inserido.</p>
+        <pre><code>&#64;yield('content')</code></pre>
+        <div class="example">
+            <p><strong>Exemplo:</strong> No layout base, você pode ter algo assim:</p>
+            <pre><code>&lt;body&gt;
+    &#64;yield('content')
+&lt;/body&gt;</code></pre>
+        </div>
+    </div>
+
+    <div class="directive">
+        <h3>@if, @elseif, @else e @endif</h3>
+        <p>Essas diretivas permitem a criação de condições em suas views.</p>
+        <pre><code>&#64;if($user)
+    &lt;p&gt;Bem-vindo, &#123;&#123; $user-&gt;name &#125;&#125;&lt;/p&gt;
+&#64;elseif($guest)
+    &lt;p&gt;Bem-vindo, Convidado&lt;/p&gt;
+&#64;else
+    &lt;p&gt;Por favor, faça login&lt;/p&gt;
+&#64;endif</code></pre>
+        <div class="example">
+            <p><strong>Exemplo:</strong> Exiba diferentes conteúdos com base em uma condição:</p>
+            <pre><code>&#64;if($user)
+    &lt;p&gt;Bem-vindo, &#123;&#123; $user-&gt;name &#125;&#125;&lt;/p&gt;
+&#64;elseif($guest)
+    &lt;p&gt;Bem-vindo, Convidado&lt;/p&gt;
+&#64;else
+    &lt;p&gt;Por favor, faça login&lt;/p&gt;
+&#64;endif</code></pre>
+        </div>
+    </div>
+
+    <div class="directive">
+        <h3>@isset e @endisset</h3>
+        <p>A diretiva <code>@isset</code> verifica se uma variável foi definida e não é <code>null</code>.</p>
+        <pre><code>&#64;isset($record)
+    &lt;p&gt;O recorde é &#123;&#123; $record &#125;&#125;&lt;/p&gt;
+&#64;endisset</code></pre>
+        <div class="example">
+            <p><strong>Exemplo:</strong> Exiba conteúdo apenas se uma variável estiver definida:</p>
+            <pre><code>&#64;isset($record)
+    &lt;p&gt;O recorde é &#123;&#123; $record &#125;&#125;&lt;/p&gt;
+&#64;endisset</code></pre>
+        </div>
+    </div>
+
+    <div class="directive">
+        <h3>@empty e @endempty</h3>
+        <p>A diretiva <code>@empty</code> verifica se uma variável está vazia.</p>
+        <pre><code>&#64;empty($records)
+    &lt;p&gt;Não há registros disponíveis&lt;/p&gt;
+&#64;endempty</code></pre>
+        <div class="example">
+            <p><strong>Exemplo:</strong> Exiba uma mensagem se não houver registros disponíveis:</p>
+            <pre><code>&#64;empty($records)
+    &lt;p&gt;Não há registros disponíveis&lt;/p&gt;
+&#64;endempty</code></pre>
+        </div>
+    </div>
+
+    <div class="directive">
+        <h3>@for e @endfor</h3>
+        <p>A diretiva <code>@for</code> permite criar loops baseados em uma condição.</p>
+        <pre><code>&#64;for($i = 0; $i &lt; 10; $i++)
+    &lt;p&gt;Item &#123;&#123; $i &#125;&#125;&lt;/p&gt;
+&#64;endfor</code></pre>
+        <div class="example">
+            <p><strong>Exemplo:</strong> Um loop simples que gera uma lista de itens:</p>
+            <pre><code>&#64;for($i = 0; $i &lt; 10; $i++)
+    &lt;p&gt;Item &#123;&#123; $i &#125;&#125;&lt;/p&gt;
+&#64;endfor</code></pre>
+        </div>
+    </div>
+
+    <div class="directive">
+        <h3>@foreach e @endforeach</h3>
+        <p>A diretiva <code>@foreach</code> é usada para iterar sobre arrays ou coleções.</p>
+        <pre><code>&#64;foreach($items as $item)
+    &lt;p&gt;Item: &#123;&#123; $item &#125;&#125;&lt;/p&gt;
+&#64;endforeach</code></pre>
+        <div class="example">
+            <p><strong>Exemplo:</strong> Itere sobre uma lista de itens:</p>
+            <pre><code>&#64;foreach($items as $item)
+    &lt;p&gt;Item: &#123;&#123; $item &#125;&#125;&lt;/p&gt;
+&#64;endforeach</code></pre>
+        </div>
+    </div>
+
+    <div class="directive">
+        <h3>@forelse e @endforelse</h3>
+        <p>A diretiva <code>@forelse</code> é usada para iterar sobre uma coleção, mas também pode fornecer uma alternativa se a coleção estiver vazia.</p>
+        <pre><code>&#64;forelse($users as $user)
+    &lt;p&gt;&#123;&#123; $user-&gt;name &#125;&#125;&lt;/p&gt;
+&#64;empty
+    &lt;p&gt;Nenhum usuário encontrado&lt;/p&gt;
+&#64;endforelse</code></pre>
+        <div class="example">
+            <p><strong>Exemplo:</strong> Exiba uma mensagem alternativa se não houver usuários:</p>
+            <pre><code>&#64;forelse($users as $user)
+    &lt;p&gt;&#123;&#123; $user-&gt;name &#125;&#125;&lt;/p&gt;
+&#64;empty
+    &lt;p&gt;Nenhum usuário encontrado&lt;/p&gt;
+&#64;endforelse</code></pre>
+        </div>
+    </div>
+
+    <div class="directive">
+        <h3>@while e @endwhile</h3>
+        <p>A diretiva <code>@while</code> cria um loop baseado em uma expressão booleana.</p>
+        <pre><code>&#64;while($condition)
+    &lt;p&gt;Este é um loop while&lt;/p&gt;
+&#64;endwhile</code></pre>
+        <div class="example">
+            <p><strong>Exemplo:</strong> Um loop simples enquanto a condição for verdadeira:</p>
+            <pre><code>&#64;while($condition)
+    &lt;p&gt;Este é um loop while&lt;/p&gt;
+&#64;endwhile</code></pre>
+        </div>
+    </div>
+
+    <div class="directive">
+        <h3>@include</h3>
+        <p>A diretiva <code>@include</code> permite incluir uma view dentro de outra.</p>
+        <pre><code>&#64;include('partials.header')</code></pre>
+        <div class="example">
+            <p><strong>Exemplo:</strong> Incluindo um arquivo de cabeçalho:</p>
+            <pre><code>&#64;include('partials.header')</code></pre>
+        </div>
+    </div>
+
+    <div class="directive">
+        <h3>@php e @endphp</h3>
+        <p>A diretiva <code>@php</code> permite que você insira código PHP diretamente na view.</p>
+        <pre><code>&#64;php
+    $currentTime = date('H:i:s');
+&#64;endphp</code></pre>
+        <div class="example">
+            <p><strong>Exemplo:</strong> Executando código PHP dentro de uma view:</p>
+            <pre><code>&#64;php
+    $currentTime = date('H:i:s');
+&#64;endphp
+
+&lt;p&gt;Hora atual: &#123;&#123; $currentTime &#125;&#125;&lt;/p&gt;</code></pre>
+        </div>
+    </div>
+
+    <div class="directive">
+        <h3>@csrf</h3>
+        <p>A diretiva <code>@csrf</code> é usada para inserir um token CSRF em formulários.</p>
+        <pre><code>&#64;csrf</code></pre>
+        <div class="example">
+            <p><strong>Exemplo:</strong> Incluindo um token CSRF em um formulário:</p>
+            <pre><code>&lt;form method="POST" action="/login"&gt;
+    &#64;csrf
+    &lt;input type="text" name="email"&gt;
+    &lt;input type="password" name="password"&gt;
+    &lt;button type="submit"&gt;Login&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+        </div>
+    </div>
+
+    <div class="directive">
+        <h3>@method</h3>
+        <p>A diretiva <code>@method</code> é usada para especificar métodos HTTP diferentes de <code>POST</code> em formulários.</p>
+        <pre><code>&#64;method('PUT')</code></pre>
+        <div class="example">
+            <p><strong>Exemplo:</strong> Criando um formulário com método <code>PUT</code>:</p>
+            <pre><code>&lt;form method="POST" action="/update"&gt;
+    &#64;method('PUT')
+    &#64;csrf
+    &lt;input type="text" name="email"&gt;
+    &lt;button type="submit"&gt;Atualizar&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+        </div>
+    </div>
+
+    <div class="directive">
+        <h3>@error</h3>
+        <p>A diretiva <code>@error</code> é usada para exibir mensagens de erro relacionadas a campos de formulário.</p>
+        <pre><code>&#64;error('email')
+    &lt;div class="alert alert-danger"&gt;&#123;&#123; $message &#125;&#125;&lt;/div&gt;
+&#64;enderror</code></pre>
+        <div class="example">
+            <p><strong>Exemplo:</strong> Exibindo uma mensagem de erro para o campo de e-mail:</p>
+            <pre><code>&lt;input type="text" name="email"&gt;
+&#64;error('email')
+    &lt;div class="alert alert-danger"&gt;&#123;&#123; $message &#125;&#125;&lt;/div&gt;
+&#64;enderror</code></pre>
+        </div>
+    </div>
+
+    <div class="directive">
+        <h3>@auth e @guest</h3>
+        <p>Essas diretivas são usadas para verificar a autenticação do usuário. <code>@auth</code> verifica se o usuário está autenticado, e <code>@guest</code> verifica se o usuário não está autenticado.</p>
+        <pre><code>&#64;auth
+    &lt;p&gt;Bem-vindo, &#123;&#123; auth()-&gt;user()-&gt;name &#125;&#125;&lt;/p&gt;
+&#64;endauth
+
+&#64;guest
+    &lt;p&gt;Bem-vindo, visitante!&lt;/p&gt;
+&#64;endguest</code></pre>
+        <div class="example">
+            <p><strong>Exemplo:</strong> Exibindo conteúdo diferente para usuários autenticados e convidados:</p>
+            <pre><code>&#64;auth
+    &lt;p&gt;Bem-vindo, &#123;&#123; auth()-&gt;user()-&gt;name &#125;&#125;&lt;/p&gt;
+&#64;endauth
+
+&#64;guest
+    &lt;p&gt;Bem-vindo, visitante!&lt;/p&gt;
+&#64;endguest</code></pre>
+        </div>
+    </div>
+
+    <div class="directive">
+        <h3>@switch, @case, @break e @default</h3>
+        <p>Essas diretivas funcionam como um switch-case em PHP.</p>
+        <pre><code>&#64;switch($i)
+    &#64;case(1)
+        &lt;p&gt;Primeiro caso&lt;/p&gt;
+        &#64;break
+
+    &#64;case(2)
+        &lt;p&gt;Segundo caso&lt;/p&gt;
+        &#64;break
+
+    &#64;default
+        &lt;p&gt;Caso padrão&lt;/p&gt;
+&#64;endswitch</code></pre>
+        <div class="example">
+            <p><strong>Exemplo:</strong> Criando um switch-case para diferentes valores:</p>
+            <pre><code>&#64;switch($i)
+    &#64;case(1)
+        &lt;p&gt;Primeiro caso&lt;/p&gt;
+        &#64;break
+
+    &#64;case(2)
+        &lt;p&gt;Segundo caso&lt;/p&gt;
+        &#64;break
+
+    &#64;default
+        &lt;p&gt;Caso padrão&lt;/p&gt;
+&#64;endswitch</code></pre>
+        </div>
+    </div>
+
+    <div class="directive">
+        <h3>@inject</h3>
+        <p>A diretiva <code>@inject</code> permite injetar uma instância de um serviço diretamente em uma view.</p>
+        <pre><code>&#64;inject('service', 'App\Services\MyService')</code></pre>
+        <div class="example">
+            <p><strong>Exemplo:</strong> Injetando um serviço em uma view:</p>
+            <pre><code>&#64;inject('service', 'App\Services\MyService')
+
+&lt;p&gt;Resultado do serviço: &#123;&#123; $service-&gt;perform() &#125;&#125;&lt;/p&gt;</code></pre>
+        </div>
+    </div>
+
+    <div class="directive">
+        <h3>@json</h3>
+        <p>A diretiva <code>@json</code> converte um array ou objeto em JSON e o exibe na view.</p>
+        <pre><code>&#64;json($array)</code></pre>
+        <div class="example">
+            <p><strong>Exemplo:</strong> Exibindo um array como JSON:</p>
+            <pre><code>&#64;json(['name' =&gt; 'Laravel', 'version' =&gt; 8])</code></pre>
+        </div>
+    </div>
+
+</div>
+
+<footer>
+    <p>&copy; 2025 - Tutorial Completo do Blade Templating Engine</p>
+</footer>
+
+</body>
+</html>

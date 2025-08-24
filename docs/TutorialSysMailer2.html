@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorial SysMailer.php</title>
+    <link rel="stylesheet" href="(link unavailable)">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Tutorial SysMailer.php</h1>
+        <p class="text-muted">Envie emails com facilidade usando a Classe SysMailer.php</p>
+        
+        <!-- Seção 1: Instalação e Configuração -->
+        <h2>Instalação e Configuração</h2>
+        <p>Para começar, você precisará incluir a Classe SysMailer.php no seu projeto.</p>
+        <ul>
+            <li>Faça o download da Classe SysMailer.php;</li>
+            <li>Cole o arquivo na pasta do seu projeto;</li>
+            <li>Inclua a Classe SysMailer.php no seu arquivo PHP.</li>
+        </ul>
+        
+        <!-- Seção 2: Configuração do SMTP -->
+        <h2>Configuração do SMTP</h2>
+        <p>Configure as opções do SMTP para conectar ao servidor de email.</p>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Opção</th>
+                    <th>Valor</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Host</td>
+                    <td>Endereço do servidor SMTP</td>
+                </tr>
+                <tr>
+                    <td>Porta</td>
+                    <td>Número da porta do servidor SMTP</td>
+                </tr>
+                <tr>
+                    <td>Usuário</td>
+                    <td>Nome de usuário do servidor SMTP</td>
+                </tr>
+                <tr>
+                    <td>Senha</td>
+                    <td>Senha do servidor SMTP</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <!-- Seção 3: Enviando Emails -->
+        <h2>Enviando Emails</h2>
+        <p>Use o método send() para enviar emails.</p>
+        <code>
+            $mailer = new SysMailer([
+                'host' => 'seu_smtp',
+                'port' => 587,
+                'username' => 'seu_email',
+                'password' => 'sua_senha',
+                'encryption' => 'tls',
+                'from_email' => 'seu_email',
+                'from_name' => 'Seu Nome',
+            ]);
+            
+            $mailer->send('destinatario@example.com', 'Assunto', 'Corpo do email');
+        </code>
+        
+        <!-- Seção 4: Anexos e Caracteres Especiais -->
+        <h2>Anexos e Caracteres Especiais</h2>
+        <p>Envie anexos e use caracteres especiais nos emails.</p>
+        <ul>
+            <li>Use o método send() com o parâmetro $attachments;</li>
+            <li>Use o método encodeSubject() e encodeBody() para caracteres especiais.</li>
+        </ul>
+        
+        <!-- Seção 5: Log de Envio e Erro -->
+        <h2>Log de Envio e Erro</h2>
+        <p>Registre os logs de envio e erro para monitorar o sistema.</p>
+        <ul>
+            <li>Use o método logSuccess() e logError() para registrar logs;</li>
+            <li>Configure o arquivo de log no construtor da Classe SysMailer.php.</li>
+        </ul>
+        
+        <footer class="text-center">
+            &copy; 2023 Tutorial SysMailer.php
+        </footer>
+    </div>
+    
+    <script src="(link unavailable)"></script>
+</body>
+</html>

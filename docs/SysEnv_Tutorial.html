@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorial: Classe SysEnv</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        h1 {
+            border-bottom: 2px solid #333;
+            padding-bottom: 10px;
+        }
+        pre {
+            background: #eee;
+            padding: 10px;
+            border-left: 3px solid #333;
+            overflow-x: auto;
+        }
+        code {
+            background: #f9f9f9;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+        .example {
+            background: #fff;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 4px;
+        }
+        .note {
+            background: #fff3cd;
+            border: 1px solid #ffeeba;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 4px;
+            color: #856404;
+        }
+        .note strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Tutorial: Classe <code>SysEnv</code> e Suas Aplicações</h1>
+    <p>Este tutorial aborda a criação e o uso da classe <code>SysEnv</code>, que permite carregar variáveis de ambiente a partir de um arquivo <code>.env</code> em uma aplicação PHP. Essas variáveis podem ser usadas para configurar diversas partes da aplicação, como credenciais de banco de dados, chaves de API, e outras configurações sensíveis.</p>
+
+    <h2>1. O Que é a Classe <code>SysEnv</code>?</h2>
+    <p>A classe <code>SysEnv</code> foi desenvolvida para facilitar o carregamento e a gestão de variáveis de ambiente em aplicações PHP. Ela lê um arquivo <code>.env</code> e carrega suas variáveis no ambiente, tornando-as acessíveis em todo o código da aplicação.</p>
+
+    <h2>2. Implementação da Classe <code>SysEnv</code></h2>
+    <p>Primeiro, vamos ver a implementação da classe <code>SysEnv</code>:</p>
+    
+    <div class="example">
+        <pre><code>&lt;?php
+namespace Core;
+
+class SysEnv
+{
+    /**
+     * Carrega as variáveis de ambiente do arquivo .env.
+     *
+     * @param string $filePath Caminho para o arquivo .env.
+     */
+    public static function load($filePath = __DIR__ . '/../../.env')
+    {
+        if (!file_exists($filePath)) {
+            throw new \Exception("Arquivo .env não encontrado em: " . $filePath);
+        }
+
+        $lines = file($filePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        foreach ($lines as $line) {
+            // Ignorar comentários
+            if (strpos(trim($line), '#') === 0) {
+                continue;
+            }
+
+            // Dividir chave e valor
+            list($key, $value) = explode('=', $line, 2) + [NULL, NULL];
+
+            if ($key !== NULL) {
+                $key = trim($key);
+                $value = trim($value);
+
+                // Definir variável de ambiente
+                putenv("$key=$value");
+                $_ENV[$key] = $value;
+                $_SERVER[$key] = $value;
+            }
+        }
+    }
+
+    /**
+     * Obtém o valor de uma variável de ambiente.
+     *
+     * @param string $key Nome da variável.
+     * @param mixed $default Valor padrão se a variável não existir.
+     * @return mixed Valor da variável de ambiente ou o valor padrão.
+     */
+    public static function get($key, $default = null)
+    {
+        return $_ENV[$key] ?? $_SERVER[$key] ?? $default;
+    }
+}
+?&gt;</code></pre>
+    </div>
+
+    <h3>Explicação da Implementação</h3>
+    <ul>
+        <li><strong>Método <code>load</code>:</strong> Este método lê o arquivo <code>.env</code>, ignora linhas vazias e comentários, e carrega as variáveis no ambiente PHP usando <code>putenv</code>, <code>$_ENV</code> e <code>$_SERVER</code>.</li>
+        <li><strong>Método <code>get</code>:</strong> Este método recupera o valor de uma variável de ambiente carregada. Se a variável não estiver definida, ele retorna um valor padrão especificado.</li>
+    </ul>
+
+    <h2>3. Utilizando a Classe <code>SysEnv</code> em Sua Aplicação</h2>
+    <p>Agora que temos a classe implementada, vamos ver como usá-la na prática.</p>
+    
+    <h3>Carregando Variáveis de Ambiente</h3>
+    <p>Antes de acessar qualquer variável de ambiente, é importante carregar as variáveis do arquivo <code>.env</code> no início do seu script:</p>
+    
+    <div class="example">
+        <pre><code>&lt;?php
+require_once __DIR__ . '/vendor/autoload.php';
+
+use Core\SysEnv;
+
+// Carregar variáveis de ambiente do arquivo .env
+SysEnv::load();
+?&gt;</code></pre>
+    </div>
+
+    <h3>Definindo Constantes com Variáveis de Ambiente</h3>
+    <p>Uma prática comum é usar as variáveis de ambiente para definir constantes globais na aplicação, como credenciais de banco de dados e outras configurações importantes:</p>
+    
+    <div class="example">
+        <pre><code>&lt;?php
+require_once __DIR__ . '/config/loadenv.php';
+
+// Definir constantes usando o valor das variáveis de ambiente
+define("DB_HOST", SysEnv::get('DB_HOST', 'localhost'));
+define("DB_USER", SysEnv::get('DB_USER', 'root'));
+define("DB_PASSWORD", SysEnv::get('DB_PASSWORD', ''));
+define("DB_NAME", SysEnv::get('DB_NAME', 'sysframework'));
+?&gt;</code></pre>
+    </div>
+
+    <h3>Exemplo de Uso</h3>
+    <p>Agora que as variáveis de ambiente foram carregadas e as constantes definidas, você pode usá-las em seu código normalmente:</p>
+    
+    <div class="example">
+        <pre><code>&lt;?php
+echo "Conectando ao banco de dados em " . DB_HOST . " com o usuário " . DB_USER . "&lt;br&gt;";
+
+// Exemplo de conexão com banco de dados (pseudocódigo)
+$connection = new DatabaseConnection(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+
+if ($connection->isConnected()) {
+    echo "Conexão estabelecida com sucesso!";
+} else {
+    echo "Falha ao conectar ao banco de dados.";
+}
+?&gt;</code></pre>
+    </div>
+
+    <h2>4. Exemplo de Arquivo <code>.env</code></h2>
+    <p>O arquivo <code>.env</code> deve estar localizado na raiz do projeto e seguir o formato chave-valor:</p>
+    
+    <div class="example">
+        <pre><code>APP_NAME=SysFramework
+APP_ENV=local
+APP_KEY=base64:chave_exemplo
+APP_DEBUG=true
+APP_URL=http://localhost
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=senha
+DB_NAME=sysframework
+</code></pre>
+    </div>
+
+    <h2>5. Considerações Finais</h2>
+    <p>A classe <code>SysEnv</code> é uma solução simples e eficaz para gerenciar configurações sensíveis e variáveis de ambiente em sua aplicação PHP. Certifique-se de que o arquivo <code>.env</code> esteja corretamente configurado e que o método <code>SysEnv::load()</code> seja chamado no início do ciclo de execução da sua aplicação.</p>
+
+    <div class="note">
+        <strong>Dicas:</strong>
+        <ul>
+            <li>Mantenha o arquivo <code>.env</code> fora do controle de versão (como Git) para evitar a exposição de informações sensíveis.</li>
+            <li>Use variáveis de ambiente para separar as configurações de desenvolvimento, teste e produção, garantindo que sua aplicação se comporte corretamente em cada ambiente.</li>
+            <li>Considere usar ferramentas como <code>phpdotenv</code> em projetos maiores para um gerenciamento mais robusto de variáveis de ambiente.</li>
+        </ul>
+    </div>
+</body>
+</html>

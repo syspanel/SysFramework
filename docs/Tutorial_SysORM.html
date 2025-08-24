@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual de SysORM</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.3/css/bootstrap.min.css">
+    <style>
+        body {
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+        .container {
+            max-width: 800px;
+        }
+        .code-block {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 15px;
+            overflow-x: auto;
+            font-family: monospace;
+        }
+        h2 {
+            margin-top: 30px;
+        }
+        pre {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="display-4 text-center">Manual de SysORM</h1>
+        <p class="lead text-center">Guia completo para operações CRUD com SysORM.</p>
+
+        <h2>Introdução</h2>
+        <p>O SysORM é uma camada de abstração para acesso a banco de dados em PHP, facilitando as operações de CRUD e gerenciamento de dados. Este tutorial irá guiá-lo através da configuração e uso do SysORM com exemplos práticos.</p>
+
+        <h2>Configuração</h2>
+        <p>Para começar a usar o SysORM, você precisa configurá-lo corretamente em seu projeto.</p>
+
+        <h3>1. Configuração Básica</h3>
+        <p>Primeiro, adicione o SysORM ao seu projeto e configure-o.</p>
+
+        <div class="code-block">
+            <pre><code>composer require your-repo/sysorm</code></pre>
+        </div>
+
+        <p>Em seguida, configure o banco de dados no arquivo de configuração do SysORM.</p>
+
+        <div class="code-block">
+            <pre><code>&lt;?php
+// Exemplo de configuração do SysORM
+use Core\SysORM;
+
+SysORM::configure([
+    'driver' => 'mysql',
+    'host' => 'localhost',
+    'database' => 'my_database',
+    'username' => 'root',
+    'password' => '',
+    'charset' => 'utf8mb4',
+    'collation' => 'utf8mb4_unicode_ci',
+    'prefix' => '',
+]);
+?&gt;</code></pre>
+        </div>
+
+        <h2>Operações CRUD</h2>
+        <p>A seguir, exploraremos exemplos de operações CRUD usando SysORM.</p>
+
+        <h3>1. Criar (Create)</h3>
+        <p>Para criar um novo registro, você pode usar o método <code>create</code> da sua model.</p>
+
+        <div class="code-block">
+            <pre><code>&lt;?php
+namespace App\Models;
+
+use Core\SysORM;
+
+class Client extends SysORM
+{
+    protected $table = 'clients';
+
+    protected $fillable = [
+        'name',
+        'password',
+        'company',
+        'address',
+        'phone',
+        'email',
+        'notes'
+    ];
+}
+
+// Criando um novo cliente
+$client = Client::create([
+    'name' => 'João da Silva',
+    'password' => password_hash('secret', PASSWORD_BCRYPT),
+    'company' => 'Empresa X',
+    'address' => 'Rua A, 123',
+    'phone' => '123456789',
+    'email' => 'joao@empresa.com',
+    'notes' => 'Nenhuma'
+]);
+?&gt;</code></pre>
+        </div>
+
+        <h3>2. Ler (Read)</h3>
+        <p>Para ler registros, você pode usar os métodos <code>all</code>, <code>find</code> e <code>where</code>.</p>
+
+        <div class="code-block">
+            <pre><code>&lt;?php
+// Encontrar todos os clientes
+$clients = Client::all();
+
+// Encontrar um cliente específico
+$client = Client::find(1);
+
+// Filtrar clientes
+$clients = Client::where('company', 'Empresa X')->get();
+?&gt;</code></pre>
+        </div>
+
+        <h3>3. Atualizar (Update)</h3>
+        <p>Para atualizar um registro, você pode usar o método <code>update</code> na instância do modelo.</p>
+
+        <div class="code-block">
+            <pre><code>&lt;?php
+$client = Client::find(1);
+
+if ($client) {
+    $client->update([
+        'phone' => '987654321',
+        'address' => 'Rua B, 456'
+    ]);
+}
+?&gt;</code></pre>
+        </div>
+
+        <h3>4. Excluir (Delete)</h3>
+        <p>Para excluir um registro, você pode usar o método <code>delete</code> na instância do modelo.</p>
+
+        <div class="code-block">
+            <pre><code>&lt;?php
+$client = Client::find(1);
+
+if ($client) {
+    $client->delete();
+}
+?&gt;</code></pre>
+        </div>
+
+        <h2>Exemplo Completo</h2>
+        <p>Aqui está um exemplo completo de um controlador que usa o SysORM para realizar operações CRUD.</p>
+
+        <div class="code-block">
+            <pre><code>&lt;?php
+namespace App\Controllers;
+
+use App\Models\Client;
+use Core\BaseController;
+use Core\Request;
+use Core\Response;
+use Core\SysLogger;
+use eftec\bladeone\BladeOne;
+
+class ClientController extends BaseController
+{
+    protected $blade;
+    protected $logger;
+
+    public function __construct()
+    {
+        $this->blade = new BladeOne(VIEWS_PATH, VIEWSCACHE_PATH, BladeOne::MODE_AUTO);
+        $this->logger = new SysLogger();
+    }
+
+    public function index(Request $request, Response $response)
+    {
+        $clients = Client::all();
+        $response->body($this->blade->run('clients.index', ['clients' => $clients]));
+    }
+
+    public function store(Request $request, Response $response)
+    {
+        $data = $request->post();
+        $data['password'] = password_hash($data['password'], PASSWORD_BCRYPT);
+        Client::create($data);
+        $response->header('Location', '/clients');
+        $response->status(302);
+    }
+
+    public function update(Request $request, Response $response, $id)
+    {
+        $client = Client::find($id);
+        if ($client) {
+            $data = $request->post();
+            if (!empty($data['password'])) {
+                $data['password'] = password_hash($data['password'], PASSWORD_BCRYPT);
+            }
+            $client->update($data);
+            $response->header('Location', '/clients');
+            $response->status(302);
+        } else {
+            $response->status(404);
+            $response->body('Cliente não encontrado.');
+        }
+    }
+
+    public function delete(Request $request, Response $response, $id)
+    {
+        $client = Client::find($id);
+        if ($client) {
+            $client->delete();
+            $response->header('Location', '/clients');
+            $response->status(302);
+        } else {
+            $response->status(404);
+            $response->body('Cliente não encontrado.');
+        }
+    }
+}
+?&gt;</code></pre>
+        </div>
+
+        <h2>Conclusão</h2>
+        <p>Este tutorial cobriu as operações básicas de CRUD usando o SysORM. Com esta base, você pode começar a construir aplicações PHP que interagem com bancos de dados de maneira eficiente e estruturada. Para mais detalhes e personalizações, consulte a documentação do SysORM e explore suas funcionalidades.</p>
+
+        <footer class="text-center">
+            <p>&copy; 2025 SysPanel</p>
+        </footer>
+    </div>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

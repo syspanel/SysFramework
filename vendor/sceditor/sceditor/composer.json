@@ -1,0 +1,34 @@
+{
+  "name": "sceditor/sceditor",
+  "description": "A lightweight BBCode and XHTML WYSIWYG editor",
+  "type": "library",
+  "homepage": "http://www.sceditor.com/",
+  "license": "MIT",
+  "support": {
+    "issues": "https://github.com/samclarke/SCEditor/issues",
+    "source": "https://github.com/samclarke/SCEditor"
+  },
+  "authors": [
+    {
+      "name": "Sam Clarke",
+      "email": "sam@samclarkes.com"
+    }
+  ],
+  "require": {
+    "components/jquery": ">= 2.1.0"
+  },
+  "extra": {
+    "component": {
+      "scripts": [
+        "minified/*.js",
+        "minified/plugins/*.js"
+      ],
+      "files": [
+          "minified/**",
+          "emoticons/**",
+          "languages/**",
+          "development/**"
+      ]
+    }
+  }
+}

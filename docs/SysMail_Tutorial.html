@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SysMail Tutorial</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .code-block {
+            background-color: #f1f1f1;
+            padding: 20px;
+            border-radius: 5px;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+        h1, h2, h3 {
+            color: #343a40;
+        }
+        .tutorial-step {
+            margin-bottom: 40px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1 class="text-center">SysMail Tutorial</h1>
+    <p class="text-center">Aprenda a configurar e usar o sistema de envio de e-mails em seu framework PHP</p>
+
+    <div class="tutorial-step">
+        <h2>1. O que é o SysMail?</h2>
+        <p>O <strong>SysMail</strong> é uma classe de envio de e-mails para seu framework PHP, que permite o envio de mensagens por SMTP ou Sendmail. Ele suporta configuração de provedores de e-mail e templates personalizados para mensagens.</p>
+    </div>
+
+    <div class="tutorial-step">
+        <h2>2. Configuração no arquivo .env</h2>
+        <p>Antes de usar o <strong>SysMail</strong>, você precisa configurar as variáveis de ambiente no arquivo <code>.env</code>. Aqui está um exemplo:</p>
+        <div class="code-block">
+MAIL_TRANSPORT=smtp<br>
+MAIL_HOST=smtp.example.com<br>
+MAIL_PORT=587<br>
+MAIL_USERNAME=your_username<br>
+MAIL_PASSWORD=your_password<br>
+MAIL_ENCRYPTION=tls<br>
+MAIL_FROM_ADDRESS=your_email@example.com<br>
+MAIL_FROM_NAME=Your Name
+        </div>
+    </div>
+
+    <div class="tutorial-step">
+        <h2>3. Classe SysMail</h2>
+        <p>A seguir está o código da classe <strong>SysMail</strong>:</p>
+        <div class="code-block">
+<code><?php<br>
+namespace Core;<br><br>
+
+use Exception;<br><br>
+
+class SysMail<br>
+{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;protected $config;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;protected $transport;<br><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;public function __construct()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$this->config = $this->loadConfig();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$this->setupTransport();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;protected function loadConfig()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return [<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'transport' => getenv('MAIL_TRANSPORT') ?: 'smtp',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'host' => getenv('MAIL_HOST') ?: 'localhost',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'port' => getenv('MAIL_PORT') ?: 587,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'username' => getenv('MAIL_USERNAME') ?: '',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'password' => getenv('MAIL_PASSWORD') ?: '',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'encryption' => getenv('MAIL_ENCRYPTION') ?: 'tls',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'from' => [<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'address' => getenv('MAIL_FROM_ADDRESS') ?: '',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'name' => getenv('MAIL_FROM_NAME') ?: ''<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;];<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;// Demais métodos...<br>
+}
+</code>
+        </div>
+    </div>
+
+    <div class="tutorial-step">
+        <h2>4. Usando o SysMail</h2>
+        <p>Agora que o <strong>SysMail</strong> está configurado, você pode utilizá-lo para enviar e-mails. Aqui está um exemplo de uso:</p>
+        <div class="code-block">
+<code>
+$mailer = new \Core\SysMail();<br>
+$templatePath = __DIR__ . '/../views/emails/welcome.php';<br>
+$data = ['name' => 'John Doe'];<br>
+$emailBody = $mailer->renderTemplate($templatePath, $data);<br><br>
+
+$mailer->send('recipient@example.com', 'Welcome!', $emailBody);
+</code>
+        </div>
+        <p>Certifique-se de que o template de e-mail existe em <code>/views/emails/welcome.php</code>, e que você o está populando com os dados corretos.</p>
+    </div>
+
+    <div class="tutorial-step">
+        <h2>5. Métodos e Personalização</h2>
+        <p>A classe <strong>SysMail</strong> suporta os seguintes métodos para personalização:</p>
+        <ul>
+            <li><strong>setupSmtp():</strong> Configura o envio por SMTP</li>
+            <li><strong>setupSendmail():</strong> Configura o envio por Sendmail</li>
+            <li><strong>send():</strong> Envia o e-mail com os parâmetros de destinatário, assunto e corpo</li>
+            <li><strong>renderTemplate():</strong> Renderiza templates de e-mail com dados dinâmicos</li>
+        </ul>
+    </div>
+
+    <div class="tutorial-step">
+        <h2>6. Conclusão</h2>
+        <p>O <strong>SysMail</strong> é uma solução robusta para o envio de e-mails em seu framework PHP. Com a capacidade de configurar provedores de e-mail e usar templates personalizados, ele oferece flexibilidade para atender às necessidades da sua aplicação. Certifique-se de configurar corretamente seu <code>.env</code> e ajustar os templates conforme necessário.</p>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

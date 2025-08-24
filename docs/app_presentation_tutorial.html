@@ -1,0 +1,98 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apresentação e Tutorial do App PHP Framework</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <header class="text-center mb-4">
+            <h1>Apresentação do App PHP Framework</h1>
+            <p class="lead">Bem-vindo à documentação do seu framework PHP personalizado!</p>
+        </header>
+
+        <!-- Introdução -->
+        <section id="introducao" class="mb-5">
+            <h2>1. Introdução</h2>
+            <p>Este projeto é um framework PHP personalizado, desenvolvido com uma estrutura robusta e modular. 
+            Ele permite o uso de BladeOne para renderização de templates, Illuminate Database para gerenciar o banco de dados,
+            e o Bootstrap 5 para estilização das páginas. O objetivo principal desta aplicação é fornecer uma base sólida
+            para a criação de aplicações web escaláveis e fáceis de manter.</p>
+        </section>
+
+        <!-- Estrutura do Projeto -->
+        <section id="estrutura" class="mb-5">
+            <h2>2. Estrutura do Projeto</h2>
+            <p>A estrutura do projeto é organizada da seguinte forma:</p>
+            <ul>
+                <li><strong>app/</strong>: Contém os controladores e lógica da aplicação.</li>
+                <li><strong>core/</strong>: O núcleo do sistema com funcionalidades essenciais.</li>
+                <li><strong>public/</strong>: Arquivos acessíveis publicamente, como CSS e JS.</li>
+                <li><strong>resources/</strong>: Contém os templates BladeOne e outros recursos.</li>
+                <li><strong>routes/</strong>: Definições das rotas da aplicação.</li>
+                <li><strong>database/</strong>: Migrações e configurações de banco de dados.</li>
+                <li><strong>config/</strong>: Arquivos de configuração da aplicação.</li>
+                <li><strong>vendor/</strong>: Dependências instaladas via Composer.</li>
+            </ul>
+        </section>
+
+        <!-- Configuração do Ambiente -->
+        <section id="configuracao" class="mb-5">
+            <h2>3. Configuração do Ambiente</h2>
+            <p>Para configurar o ambiente, siga os passos abaixo:</p>
+            <ol>
+                <li>Renomeie o arquivo <code>.env.example</code> para <code>.env</code>.</li>
+                <li>Configure as variáveis de ambiente, como a conexão ao banco de dados, no arquivo <code>.env</code>.</li>
+                <li>Instale as dependências do projeto executando <code>composer install</code>.</li>
+            </ol>
+        </section>
+
+        <!-- Início Rápido -->
+        <section id="inicio-rapido" class="mb-5">
+            <h2>4. Início Rápido</h2>
+            <p>Siga os passos abaixo para iniciar a aplicação localmente:</p>
+            <ol>
+                <li>Execute o comando <code>php -S localhost:8000 -t public/</code> para rodar o servidor embutido do PHP.</li>
+                <li>Acesse a aplicação em <code>http://localhost:8000</code>.</li>
+                <li>Certifique-se de que as permissões de pasta, como <code>storage/</code> e <code>cache/</code>, estão corretamente configuradas.</li>
+            </ol>
+        </section>
+
+        <!-- Rotas Principais -->
+        <section id="rotas" class="mb-5">
+            <h2>5. Rotas Principais</h2>
+            <p>As principais rotas disponíveis na aplicação incluem:</p>
+            <ul>
+                <li><strong>/clients</strong>: Página para listar, criar, editar e excluir clientes.</li>
+                <li><strong>/products</strong>: Gerenciamento de produtos (caso aplicável).</li>
+            </ul>
+            <p>Essas rotas são definidas no arquivo <code>routes/web.php</code>.</p>
+        </section>
+
+        <!-- BladeOne e Bootstrap -->
+        <section id="bladeone-bootstrap" class="mb-5">
+            <h2>6. BladeOne e Bootstrap</h2>
+            <p>O BladeOne é usado como o sistema de templates. Para criar uma nova página, basta adicionar um arquivo BladeOne no diretório <code>resources/views/</code>. 
+            A estilização é feita utilizando o Bootstrap 5, garantindo um design moderno e responsivo.</p>
+        </section>
+
+        <!-- Banco de Dados -->
+        <section id="banco-de-dados" class="mb-5">
+            <h2>7. Banco de Dados</h2>
+            <p>As migrações do banco de dados estão localizadas no diretório <code>database/migrations</code>. 
+            Para criar as tabelas no banco de dados, execute:</p>
+            <code>php artisan migrate</code>
+            <p>Certifique-se de que as credenciais de banco de dados no arquivo <code>.env</code> estão corretas.</p>
+        </section>
+
+        <footer class="text-center mt-5">
+            <p>&copy; 2025 - Seu Framework PHP Personalizado</p>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

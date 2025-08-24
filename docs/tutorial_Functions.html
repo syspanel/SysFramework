@@ -1,0 +1,119 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorial sobre Funções em PHP</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        code {
+            background: #f4f4f4;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+        pre {
+            background: #f4f4f4;
+            padding: 10px;
+            border-radius: 3px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Tutorial sobre Funções em PHP</h1>
+
+    <h2>1. Introdução</h2>
+    <p>Funções são blocos de código reutilizáveis que realizam tarefas específicas. Elas ajudam a organizar o código e a torná-lo mais legível e modular. Em PHP, funções podem ser definidas e chamadas de várias maneiras.</p>
+
+    <h2>2. Definição de Funções</h2>
+    <p>Para definir uma função em PHP, você usa a palavra-chave <code>function</code>, seguida pelo nome da função, parênteses e chaves. Aqui está a sintaxe básica:</p>
+    <pre><code>function nomeDaFuncao($param1, $param2) {
+        // Código a ser executado
+        return $resultado;
+}</code></pre>
+
+    <h2>3. Funções Sem Parâmetros</h2>
+    <p>Você pode definir funções que não aceitam parâmetros. Essas funções podem ser usadas para realizar tarefas sem precisar de informações externas:</p>
+    <pre><code>function saudacao() {
+    echo "Olá, mundo!";
+}
+
+saudacao(); // Exibe "Olá, mundo!"</code></pre>
+
+    <h2>4. Funções com Parâmetros</h2>
+    <p>Funções podem aceitar parâmetros, que são passados entre parênteses na chamada da função. Esses parâmetros podem ser usados dentro da função para realizar cálculos ou manipulações:</p>
+    <pre><code>function somar($a, $b) {
+    return $a + $b;
+}
+
+$resultado = somar(5, 10); // $resultado será 15</code></pre>
+
+    <h2>5. Funções com Valores Padrão</h2>
+    <p>Você pode definir valores padrão para parâmetros. Se nenhum valor for fornecido para esses parâmetros ao chamar a função, o valor padrão será usado:</p>
+    <pre><code>function cumprimentar($nome = "Visitante") {
+    echo "Olá, $nome!";
+}
+
+cumprimentar(); // Exibe "Olá, Visitante!"
+cumprimentar("João"); // Exibe "Olá, João!"</code></pre>
+
+    <h2>6. Funções Anônimas</h2>
+    <p>Funções anônimas (ou funções lambda) são funções sem nome que podem ser usadas como valores:</p>
+    <pre><code>$soma = function($a, $b) {
+    return $a + $b;
+};
+
+echo $soma(5, 10); // Exibe 15</code></pre>
+
+    <h2>7. Funções como Argumentos</h2>
+    <p>Você pode passar funções como argumentos para outras funções:</p>
+    <pre><code>function aplicarFuncao($callback, $valor) {
+    return $callback($valor);
+}
+
+$resultado = aplicarFuncao(function($x) {
+    return $x * 2;
+}, 5); // $resultado será 10</code></pre>
+
+    <h2>8. Escopo de Variáveis em Funções</h2>
+    <p>As variáveis definidas dentro de uma função têm um escopo local, o que significa que elas não podem ser acessadas fora da função:</p>
+    <pre><code>function exemplo() {
+    $variavelLocal = "Eu sou local!";
+    echo $variavelLocal;
+}
+
+exemplo(); // Exibe "Eu sou local!"
+echo $variavelLocal; // Gera um erro, pois $variavelLocal não está definida fora da função</code></pre>
+
+    <h2>9. Funções Recursivas</h2>
+    <p>Funções recursivas são funções que se chamam a si mesmas. Elas são úteis para resolver problemas que podem ser divididos em subproblemas semelhantes:</p>
+    <pre><code>function fatorial($n) {
+    if ($n <= 1) {
+        return 1;
+    } else {
+        return $n * fatorial($n - 1);
+    }
+}
+
+echo fatorial(5); // Exibe 120</code></pre>
+
+    <h2>10. Funções e Tipagem</h2>
+    <p>PHP permite especificar tipos de retorno e tipos de parâmetros para funções, proporcionando maior segurança e clareza:</p>
+    <pre><code>function multiplicar(float $a, float $b): float {
+    return $a * $b;
+}
+
+echo multiplicar(4.5, 2); // Exibe 9.0</code></pre>
+
+    <h2>11. Conclusão</h2>
+    <p>Funções são uma parte essencial do desenvolvimento em PHP, permitindo a criação de código modular, reutilizável e legível. Compreender como definir, usar e manipular funções é crucial para se tornar um desenvolvedor PHP eficiente.</p>
+</body>
+</html>

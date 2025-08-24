@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorial Completo SysFramework</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background: #333;
+            color: #fff;
+            padding: 1em 0;
+            text-align: center;
+            border-bottom: 3px solid #444;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        code {
+            background: #e2e2e2;
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+        }
+        pre {
+            background: #eee;
+            padding: 1em;
+            border-radius: 3px;
+            overflow-x: auto;
+        }
+        .example {
+            background: #fff;
+            padding: 1em;
+            border-radius: 3px;
+            margin-bottom: 1em;
+        }
+        .example code {
+            background: #f9f9f9;
+            padding: 0.2em 0.4em;
+        }
+        .code-block {
+            background: #333;
+            color: #fff;
+            padding: 1em;
+            border-radius: 3px;
+            overflow-x: auto;
+        }
+        .section {
+            margin-bottom: 2em;
+        }
+        .footer {
+            text-align: center;
+            padding: 1em 0;
+            background: #333;
+            color: #fff;
+            border-top: 3px solid #444;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Tutorial Completo SysFramework</h1>
+</header>
+
+<div class="container">
+    <div class="section">
+        <h2>1. Introdução</h2>
+        <p>Este tutorial fornece uma visão geral das classes <code>SysRouter</code>, <code>Request</code>, <code>Response</code> e <code>Controllers</code> do SysFramework, detalhando suas funções, métodos e como utilizá-los em seus projetos.</p>
+    </div>
+
+    <div class="section">
+        <h2>2. Classe <code>SysRouter</code></h2>
+        <p>A classe <code>SysRouter</code> é responsável pelo gerenciamento de rotas em seu aplicativo. Ela permite definir, agrupar e resolver rotas, além de aplicar middlewares e gerar URLs.</p>
+        
+        <h3>2.1. Definindo Rotas</h3>
+        <p>Você pode definir rotas para diferentes métodos HTTP (GET, POST, PUT, DELETE) utilizando a classe <code>SysRouter</code>. Veja exemplos:</p>
+        
+        <div class="example">
+            <h4>Exemplo de Rota GET</h4>
+            <pre><code>
+SysRouter::get('/example', [ExampleController::class, 'index'])
+    ->name('example.index');
+            </code></pre>
+        </div>
+        
+        <div class="example">
+            <h4>Exemplo de Rota POST</h4>
+            <pre><code>
+SysRouter::post('/example', [ExampleController::class, 'store']);
+            </code></pre>
+        </div>
+        
+        <h3>2.2. Grupos de Rotas</h3>
+        <p>Você pode agrupar rotas que compartilham prefixos e middlewares:</p>
+        
+        <div class="example">
+            <pre><code>
+SysRouter::group(['prefix' => 'admin', 'middleware' => [Authenticate::class]], function () {
+    SysRouter::get('/dashboard', [AdminController::class, 'dashboard']);
+    SysRouter::post('/update', [AdminController::class, 'update']);
+});
+            </code></pre>
+        </div>
+
+        <h3>2.3. Resolvendo Rotas</h3>
+        <p>Para resolver uma rota, você deve passar o método da requisição, o URI, e qualquer dependência necessária:</p>
+        
+        <div class="example">
+            <pre><code>
+$requestMethod = $_SERVER['REQUEST_METHOD'];
+$requestUri = $_SERVER['REQUEST_URI'];
+$dependencies = [new SomeService(), new AnotherService()];
+
+SysRouter::resolve($requestMethod, $requestUri, $dependencies);
+            </code></pre>
+        </div>
+
+        <h3>2.4. Middleware</h3>
+        <p>Você pode adicionar middlewares globais ou específicos para rotas:</p>
+        
+        <div class="example">
+            <h4>Exemplo de Middleware Global</h4>
+            <pre><code>
+SysRouter::middleware(SomeMiddleware::class);
+            </code></pre>
+        </div>
+
+        <div class="example">
+            <h4>Exemplo de Middleware Específico para Rota</h4>
+            <pre><code>
+SysRouter::get('/secure', [SecureController::class, 'index'])
+    ->middleware(SecureMiddleware::class);
+            </code></pre>
+        </div>
+
+        <h3>2.5. Gerar URL</h3>
+        <p>Para gerar URLs baseadas em nomes de rotas:</p>
+        
+        <div class="example">
+            <pre><code>
+$url = SysRouter::route('example.index');
+            </code></pre>
+        </div>
+        
+        <h3>2.6. Recuperando Rotas Nomeadas</h3>
+        <p>Para recuperar a URL de uma rota nomeada, você pode usar o método <code>route</code> da classe <code>SysRouter</code>. Aqui está um exemplo de como fazer isso:</p>
+        
+        <div class="example">
+            <pre><code>
+public function getRouteUrl() {
+    // Obtém a URL da rota nomeada 'example.index'
+    $url = SysRouter::route('example.index');
+    
+    // Retorna ou utiliza a URL obtida
+    return $url;
+}
+            </code></pre>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>3. Classe <code>Request</code></h2>
+        <p>A classe <code>Request</code> encapsula os dados da requisição HTTP. Ela permite acessar parâmetros, dados do POST, e mais:</p>
+        
+        <h3>3.1. Obtendo Dados da Requisição</h3>
+        <div class="example">
+            <pre><code>
+public function exampleMethod(Request $request) {
+    // Obtém parâmetros da query string
+    $queryParams = $request->query();
+    
+    // Obtém dados do POST
+    $postParams = $request->post();
+    
+    // Obtém o caminho da URL
+    $path = $request->path();
+    
+    // Obtém o método HTTP
+    $method = $request->method();
+}
+            </code></pre>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>4. Classe <code>Response</code></h2>
+        <p>A classe <code>Response</code> gerencia a resposta HTTP enviada ao cliente. Você pode definir o status, cabeçalhos e conteúdo da resposta:</p>
+        
+        <h3>4.1. Criando uma Resposta</h3>
+        <div class="example">
+            <pre><code>
+public function exampleMethod() {
+    $response = new Response("Hello World!", 200);
+    $response->header('Content-Type', 'text/plain');
+    $response->send();
+}
+            </code></pre>
+        </div>
+        
+        <h3>4.2. Redirecionamento</h3>
+        <div class="example">
+            <pre><code>
+public function redirectExample() {
+    $response = new Response('', 302);
+    $response->header('Location', '/new-location');
+    $response->send();
+}
+            </code></pre>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>5. Controllers</h2>
+        <p>Controllers são responsáveis por lidar com a lógica de negócios e interagir com modelos e views. Aqui está um exemplo de um controller básico:</p>
+
+        <div class="example">
+            <pre><code>
+namespace App\Controllers;
+
+use App\Models\Client;
+use Core\BaseController;
+use Core\SysRouter;
+use Core\SysLogger;
+use eftec\bladeone\BladeOne;
+
+class ClientController extends BaseController
+{
+    protected $blade;
+    protected $logger;
+    protected $someService;
+    protected $anotherService;
+
+    public function __construct(SomeService $someService, AnotherService $anotherService)
+    {
+        $this->blade = new BladeOne(VIEWS_PATH, VIEWSCACHE_PATH, BladeOne::MODE_AUTO);
+        $this->logger = new SysLogger();
+        $this->someService = $someService;
+        $this->anotherService = $anotherService;
+    }
+
+    public function index()
+    {
+        $this->logger->info('(clients.index) - Esta é uma mensagem de informação.');
+        $data = [
+            'user' => ['name' => 'João', 'is_admin' => true],
+            'items' => ['Item 1', 'Item 2', 'Item 3']
+        ];
+        $clients = Client::all();
+        echo $this->blade->run('clients.index', ['clients' => $clients], $data);
+    }
+
+    public function create()
+    {
+        echo $this->blade->run('clients.create');
+    }
+
+    public function store(Request $request)
+    {
+        $data = $request->post();
+        $data['password'] = password_hash($data['password'], PASSWORD_BCRYPT);
+        Client::create($data);
+        $response = new Response('', 302);
+        $response->header('Location', '/clients');
+        $response->send();
+    }
+
+    public function edit($id)
+    {
+        $client = Client::find($id);
+        echo $this->blade->run('clients.edit', ['client' => $client]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $client = Client::find($id);
+        $client->update($request->post());
+        $response = new Response('', 302);
+        $response->header('Location', '/clients');
+        $response->send();
+    }
+
+    public function show($id)
+    {
+        $client = Client::find($id);
+        echo $this->blade->run('clients.show', ['client' => $client]);
+    }
+
+    public function delete($id)
+    {
+        Client::destroy($id);
+        $response = new Response('', 302);
+        $response->header('Location', '/clients');
+        $response->send();
+    }
+}
+            </code></pre>
+        </div>
+    </div>
+</div>
+
+<footer class="footer">
+    <p>&copy; 2025 Marco Costa - SysFramework Documentation</p>
+</footer>
+
+</body>
+</html>

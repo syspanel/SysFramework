@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Helpers PHP Documentation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        code {
+            background-color: #eef;
+            padding: 2px 5px;
+            border-radius: 4px;
+        }
+        .example {
+            background-color: #ecf0f1;
+            padding: 15px;
+            border-left: 4px solid #3498db;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>PHP Helpers Documentation</h1>
+
+    <h2>1. URL Helper</h2>
+    <p>This function retrieves a URL for a given route.</p>
+    <pre><code>function url(?string $name = null, $parameters = null, ?array $getParams = null): Url</code></pre>
+    <p><strong>Usage Example:</strong></p>
+    <div class="example">
+        <code>url('route.name', ['param1' => 'value1']);</code>
+    </div>
+    <p>Returns the URL for the specified route.</p>
+
+    <h2>2. Response Helper</h2>
+    <p>This function retrieves the response object.</p>
+    <pre><code>function response(): Response</code></pre>
+    <p><strong>Usage Example:</strong></p>
+    <div class="example">
+        <code>response()->redirect('route.name');</code>
+    </div>
+    <p>Used for handling HTTP responses.</p>
+
+    <h2>3. Request Helper</h2>
+    <p>This function retrieves the request object.</p>
+    <pre><code>function request(): Request</code></pre>
+    <p><strong>Usage Example:</strong></p>
+    <div class="example">
+        <code>request()->getInputHandler();</code>
+    </div>
+    <p>Useful for accessing request data.</p>
+
+    <h2>4. Input Helper</h2>
+    <p>Fetches a specific input value or the full input handler object.</p>
+    <pre><code>function input($index = null, $defaultValue = null, ...$methods)</code></pre>
+    <p><strong>Usage Example:</strong></p>
+    <div class="example">
+        <code>$name = input('name');</code>
+    </div>
+    <p>Retrieves the input data by the specified key.</p>
+
+    <h2>5. CSRF Token Helper</h2>
+    <p>Retrieves the current CSRF token.</p>
+    <pre><code>function csrf_token(): ?string</code></pre>
+    <p><strong>Usage Example:</strong></p>
+    <div class="example">
+        <code>$token = csrf_token();</code>
+    </div>
+    <p>Useful for adding CSRF protection to forms.</p>
+
+    <h2>6. Asset URL Generator</h2>
+    <p>Generates the URL for a static asset (CSS, JS, images, etc.).</p>
+    <pre><code>function asset($path)</code></pre>
+    <p><strong>Usage Example:</strong></p>
+    <div class="example">
+        <code>asset('css/style.css');</code>
+    </div>
+    <p>Returns the full URL to the asset file.</p>
+
+    <h2>7. Sanitize Input Data</h2>
+    <p>Cleans input data to prevent XSS and other security risks.</p>
+    <pre><code>function sanitize($data)</code></pre>
+    <p><strong>Usage Example:</strong></p>
+    <div class="example">
+        <code>$cleanInput = sanitize($userInput);</code>
+    </div>
+    <p>Strips potentially harmful characters from input.</p>
+
+    <h2>8. Log Error</h2>
+    <p>Logs error messages to a specified log file.</p>
+    <pre><code>function logError($message, $file = 'error.log')</code></pre>
+    <p><strong>Usage Example:</strong></p>
+    <div class="example">
+        <code>logError('Database connection failed');</code>
+    </div>
+    <p>Writes error messages to the <code>error.log</code> file.</p>
+
+    <h2>9. Secure Session Start</h2>
+    <p>Starts a secure session with cookie-only settings.</p>
+    <pre><code>function startSecureSession()</code></pre>
+    <p><strong>Usage Example:</strong></p>
+    <div class="example">
+        <code>startSecureSession();</code>
+    </div>
+    <p>Starts the session if it is not already started.</p>
+
+    <h2>10. Format Date</h2>
+    <p>Formats a date string into the specified format.</p>
+    <pre><code>function formatDate($date, $format = 'd/m/Y H:i')</code></pre>
+    <p><strong>Usage Example:</strong></p>
+    <div class="example">
+        <code>formatDate('2025-08-30 14:30:00');</code>
+    </div>
+    <p>Returns the date formatted as <code>30/08/2025 14:30</code>.</p>
+
+    <h2>11. Format Currency</h2>
+    <p>Formats a numeric value as currency.</p>
+    <pre><code>function formatCurrency($amount, $currencySymbol = 'R$', $decimals = 2)</code></pre>
+    <p><strong>Usage Example:</strong></p>
+    <div class="example">
+        <code>formatCurrency(2500);</code>
+    </div>
+    <p>Returns the formatted value as <code>R$ 2.500,00</code>.</p>
+
+    <h2>12. Autoload Classes</h2>
+    <p>Automatically loads class files.</p>
+    <pre><code>function autoload($className)</code></pre>
+    <p><strong>Usage Example:</strong></p>
+    <div class="example">
+        <code>spl_autoload_register('autoload');</code>
+    </div>
+    <p>Registers the autoloader for classes.</p>
+
+    <h2>13. Render View</h2>
+    <p>Loads and renders a view file.</p>
+    <pre><code>function loadView($viewName, $data = [])</code></pre>
+    <p><strong>Usage Example:</strong></p>
+    <div class="example">
+        <code>loadView('header', ['title' => 'Home Page']);</code>
+    </div>
+    <p>Includes the specified view file.</p>
+
+    <h2>14. CSRF Token Generation</h2>
+    <p>Generates a CSRF token for session protection.</p>
+    <pre><code>function generateCsrfToken()</code></pre>
+    <p><strong>Usage Example:</strong></p>
+    <div class="example">
+        <code>$token = generateCsrfToken();</code>
+    </div>
+    <p>Returns a secure CSRF token.</p>
+
+    <h2>15. Redirect</h2>
+    <p>Redirects the user to a specified URL.</p>
+    <pre><code>function redirect($url, $statusCode = 302)</code></pre>
+    <p><strong>Usage Example:</strong></p>
+    <div class="example">
+        <code>redirect('https://example.com');</code>
+    </div>
+    <p>Performs an HTTP redirect.</p>
+
+    <!-- Add more functions here following the same format -->
+
+</body>
+</html>

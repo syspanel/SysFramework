@@ -1,0 +1,24 @@
+<?php  
+
+/************************************************************************/
+/* SysFramework - PHP Framework                                         */
+/* ============================                                         */
+/*                                                                      */
+/* PHP Framework                                                        */
+/* (c) 2025 by Marco Costa marcocosta@gmx.com                           */
+/*                                                                      */
+/* https://sysframework.com                                             */
+/*                                                                      */
+/* This project is licensed under the MIT License.                      */
+/*                                                                      */
+/* For more informations: marcocosta@gmx.com                            */
+/************************************************************************/
+
+require_once __DIR__ . '/vendor/autoload.php';
+
+use Core\SysCli;
+
+$cli = new SysCli();
+$cli->handle($argv);
+
+?>

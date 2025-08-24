@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SysFramework - API & Web Services Manual</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 30px;
+        }
+        h1, h2, h3 {
+            margin-top: 20px;
+        }
+        pre {
+            background-color: #f1f1f1;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        code {
+            font-size: 1.1em;
+            color: #d63384;
+        }
+        .example-box {
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 20px;
+            background-color: #fff;
+            margin-top: 20px;
+        }
+        .section-header {
+            background-color: #343a40;
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>SysFramework - API & Web Services Manual</h1>
+    <p>Bem-vindo ao manual detalhado do sistema de API e Web Services do <strong>SysFramework</strong>. Este documento contém todas as informações necessárias para implementar e utilizar APIs em seu framework PHP customizado, juntamente com exemplos práticos.</p>
+
+    <!-- Introdução -->
+    <div class="section-header">
+        <h2>1. Introdução</h2>
+    </div>
+    <p>O <strong>SysFramework</strong> permite a criação de APIs RESTful de maneira simples e eficiente. Com o suporte para rotas dinâmicas, métodos HTTP padrão e um sistema flexível de middleware, você pode criar uma API poderosa para suas aplicações.</p>
+
+    <!-- Configuração Básica -->
+    <div class="section-header">
+        <h2>2. Configuração Básica</h2>
+    </div>
+    <p>Para começar a criar APIs no <strong>SysFramework</strong>, você precisa definir suas rotas no arquivo <code>routes/api.php</code>. As rotas podem ser configuradas para atender a diversos métodos HTTP como GET, POST, PUT, DELETE.</p>
+    
+    <h3>Exemplo de Definição de Rota</h3>
+    <pre><code>
+// Definindo uma rota GET para listar usuários
+SysRouter::get('/api/users', 'App\Controllers\ApiUserController@index');
+
+// Definindo uma rota POST para criar um novo usuário
+SysRouter::post('/api/users', 'App\Controllers\ApiUserController@store');
+
+// Definindo uma rota PUT para atualizar um usuário
+SysRouter::put('/api/users/{id}', 'App\Controllers\ApiUserController@update');
+
+// Definindo uma rota DELETE para remover um usuário
+SysRouter::delete('/api/users/{id}', 'App\Controllers\ApiUserController@destroy');
+    </code></pre>
+
+    <div class="example-box">
+        <h3>Exemplo Completo</h3>
+        <p>Vamos supor que você deseja construir um sistema de gerenciamento de usuários com uma API REST. Aqui está como definir suas rotas de API:</p>
+        <pre><code>
+// Listar todos os usuários
+SysRouter::get('/api/users', 'App\Controllers\ApiUserController@index');
+
+// Criar um novo usuário
+SysRouter::post('/api/users', 'App\Controllers\ApiUserController@store');
+
+// Atualizar os dados de um usuário existente
+SysRouter::put('/api/users/{id}', 'App\Controllers\ApiUserController@update');
+
+// Excluir um usuário
+SysRouter::delete('/api/users/{id}', 'App\Controllers\ApiUserController@destroy');
+        </code></pre>
+    </div>
+
+    <!-- Middleware -->
+    <div class="section-header">
+        <h2>3. Middleware</h2>
+    </div>
+    <p>O SysFramework permite que você utilize <strong>middleware</strong> para interceptar e processar requisições antes de elas serem enviadas para o controlador. Isso é útil para adicionar autenticação, verificação de permissões e muito mais.</p>
+
+    <h3>Exemplo de Middleware de Autenticação</h3>
+    <pre><code>
+// Aplicar middleware de autenticação nas rotas de usuários
+SysRouter::middleware('AuthMiddleware')->group(function() {
+    SysRouter::get('/api/users', 'App\Controllers\ApiUserController@index');
+    SysRouter::post('/api/users', 'App\Controllers\ApiUserController@store');
+});
+    </code></pre>
+
+    <div class="example-box">
+        <h3>Exemplo de Middleware Personalizado</h3>
+        <p>Vamos criar um <code>AuthMiddleware</code> para verificar se o usuário está autenticado:</p>
+        <pre><code>
+namespace App\Middlewares;
+
+class AuthMiddleware {
+    public function handle() {
+        if (!isset($_SESSION['user'])) {
+            http_response_code(401);
+            echo json_encode(['error' => 'Unauthorized']);
+            exit;
+        }
+    }
+}
+        </code></pre>
+    </div>
+
+    <!-- Controladores -->
+    <div class="section-header">
+        <h2>4. Controladores</h2>
+    </div>
+    <p>Os controladores são responsáveis por lidar com a lógica de negócio das APIs. No exemplo abaixo, mostramos como construir um controlador básico para gerenciar usuários.</p>
+
+    <h3>Exemplo de Controlador - ApiUserController</h3>
+    <pre><code>
+namespace App\Controllers;
+
+use App\Models\User;
+
+class ApiUserController {
+
+    // Listar todos os usuários
+    public function index() {
+        $users = User::all();
+        echo json_encode($users);
+    }
+
+    // Criar um novo usuário
+    public function store() {
+        $data = $_POST;
+        $user = User::create($data);
+        echo json_encode(['success' => 'User created', 'user' => $user]);
+    }
+
+    // Atualizar um usuário existente
+    public function update($id) {
+        $data = $_POST;
+        $user = User::find($id);
+        if ($user) {
+            $user->update($data);
+            echo json_encode(['success' => 'User updated', 'user' => $user]);
+        } else {
+            echo json_encode(['error' => 'User not found']);
+        }
+    }
+
+    // Deletar um usuário
+    public function destroy($id) {
+        $user = User::find($id);
+        if ($user) {
+            $user->delete();
+            echo json_encode(['success' => 'User deleted']);
+        } else {
+            echo json_encode(['error' => 'User not found']);
+        }
+    }
+}
+    </code></pre>
+
+    <!-- Validação de Parâmetros -->
+    <div class="section-header">
+        <h2>5. Validação de Parâmetros</h2>
+    </div>
+    <p>O SysFramework permite validar parâmetros de rotas diretamente no controlador. Se os parâmetros fornecidos não forem válidos, você pode retornar uma resposta de erro adequada.</p>
+
+    <h3>Exemplo de Validação</h3>
+    <pre><code>
+public function update($id) {
+    // Verificar se o ID é um número válido
+    if (!is_numeric($id)) {
+        echo json_encode(['error' => 'Invalid user ID']);
+        return;
+    }
+
+    // Continuar com a atualização...
+}
+    </code></pre>
+
+    <!-- Tratamento de Erros -->
+    <div class="section-header">
+        <h2>6. Tratamento de Erros</h2>
+    </div>
+    <p>É importante fornecer respostas adequadas em caso de erros. O <code>SysRouter</code> oferece uma maneira simples de tratar erros de rota e exibir mensagens customizadas.</p>
+
+    <h3>Exemplo de Tratamento de Erro 404</h3>
+    <pre><code>
+SysRouter::error(function() {
+    http_response_code(404);
+    echo json_encode(['error' => 'Page not found']);
+});
+    </code></pre>
+
+    <!-- Conclusão -->
+    <div class="section-header">
+        <h2>7. Conclusão</h2>
+    </div>
+    <p>Com o SysFramework, criar APIs RESTful é simples e eficiente. A flexibilidade das rotas, middleware e validação de parâmetros permite que você construa sistemas robustos e escaláveis.</p>
+    
+    <p>Explore e adapte os exemplos fornecidos para construir soluções personalizadas com o seu framework!</p>
+</div>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

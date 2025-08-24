@@ -1,0 +1,30 @@
+{
+  "name": "sceditor",
+  "authors": [
+    "Sam Clarke <sam@samclarke.com>"
+  ],
+  "description": "A lightweight WYSIWYG BBCode & HTML editor",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:samclarke/SCEditor-bower.git"
+  },
+  "main": [
+    "./development/themes/default.css",
+    "./development/themes/famfamfam.png",
+    "./development/jquery.sceditor.default.css",
+    "./development/jquery.sceditor.js",
+    "./development/jquery.sceditor.xhtml.js",
+    "./development/jquery.sceditor.bbcode.js"
+  ],
+  "keywords": [
+    "WYSIWYG",
+    "BBCode",
+    "HTML",
+    "editor"
+  ],
+  "license": "MIT",
+  "homepage": "http://www.sceditor.com",
+  "dependencies": {
+    "jquery": ">= 1.7.0"
+  }
+}

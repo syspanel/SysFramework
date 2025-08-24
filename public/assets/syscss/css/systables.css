@@ -1,0 +1,62 @@
+/* Estilos básicos para tabelas */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: var(--spacing-unit);
+}
+
+table th, table td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+table th {
+    background-color: var(--primary-color);
+    color: #078AB3;
+}
+
+/* Alternando cores de fundo para linhas da tabela */
+table tbody tr:nth-child(odd) {
+    background-color: #e0e0e0; /* Cinza claro */
+}
+
+table tbody tr:nth-child(even) {
+    background-color: #fff; /* Branco */
+}
+
+table tbody tr:hover {
+    background-color: #f1f1f1; /* Efeito de hover */
+}
+
+
+.pagination {
+    margin-top: 20px;
+}
+
+.pagination a {
+    padding: 8px 12px;
+    margin: 0 5px;
+    text-decoration: none;
+    border: 1px solid #007bff;
+    color: #007bff;
+    border-radius: 5px;
+}
+
+.pagination a:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+.pagination .active {
+    padding: 8px 12px;
+    margin: 0 5px;
+    border: 1px solid #007bff;
+    color: white;
+    background-color: #007bff;
+    border-radius: 5px;
+}
+
+.rows-per-page-form {
+    margin-bottom: 10px;
+}

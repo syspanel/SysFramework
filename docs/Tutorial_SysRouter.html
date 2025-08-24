@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentação do SysRouter</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: #f4f4f4;
+        }
+        .container {
+            margin-top: 20px;
+        }
+        .example {
+            background: #f9f9f9;
+            border-left: 3px solid #333;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        pre {
+            background: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        code {
+            background: #e2e2e2;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <header class="bg-dark text-white text-center py-3 mb-4">
+        <h1>Documentação do SysRouter</h1>
+    </header>
+    <div class="container">
+        <div class="main-content bg-white p-4 rounded shadow-sm">
+            <h2>Introdução</h2>
+            <p>O <strong>SysRouter</strong> é um sistema de roteamento flexível e poderoso para aplicações PHP. Ele permite definir rotas HTTP, suportando métodos como GET, POST, PUT e DELETE, e oferece suporte para injeção de dependências, validação de parâmetros, cache de rotas e muito mais.</p>
+
+            <h2>Recursos</h2>
+            <ul>
+                <li><strong>Definição de Rotas:</strong> Adicione rotas para diferentes métodos HTTP.</li>
+                <li><strong>Injeção de Dependências:</strong> Suporte para injeção de dependências em controladores.</li>
+                <li><strong>Validação de Parâmetros:</strong> Verifique a validade dos parâmetros das rotas.</li>
+                <li><strong>Cache de Rotas:</strong> Melhore o desempenho armazenando e carregando as rotas em cache.</li>
+                <li><strong>Proteção Contra Roteamento Inseguro:</strong> Protege contra rotas inválidas e injeções de código.</li>
+                <li><strong>Log de Erros:</strong> Registra erros e informações de depuração.</li>
+            </ul>
+
+            <h2>Configuração e Uso</h2>
+
+            <h3>1. Definindo Rotas</h3>
+            <p>Você pode definir rotas usando os métodos <code>get</code>, <code>post</code>, <code>put</code> e <code>delete</code>. Aqui está um exemplo de como definir rotas:</p>
+            <div class="example">
+                <pre><code>SysRouter::get('/home', 'HomeController@index')->name('home.index');
+SysRouter::post('/submit', 'FormController@submit')->name('form.submit');
+SysRouter::put('/update/{id}', 'UpdateController@update')->name('update.record');
+SysRouter::delete('/delete/{id}', 'DeleteController@delete')->name('delete.record');</code></pre>
+            </div>
+
+            <h3>2. Injeção de Dependências</h3>
+            <p>O <strong>SysRouter</strong> suporta injeção de dependências, permitindo que você passe objetos necessários diretamente para os controladores. Isso facilita a gestão de serviços e outras dependências sem precisar instanciar manualmente os objetos nos controladores.</p>
+
+            <h4>Como Funciona</h4>
+            <p>Ao definir uma rota, você pode passar um array de dependências para o controlador. O sistema vai automaticamente injetar essas dependências quando o controlador for instanciado:</p>
+            <div class="example">
+                <pre><code>SysRouter::get('/profile', 'UserProfileController@show', [new UserService()])->name('profile.show');</code></pre>
+            </div>
+            <p>No exemplo acima, <code>UserProfileController@show</code> é o método do controlador e <code>[new UserService()]</code> é a dependência que será injetada no controlador.</p>
+
+            <h4>Exemplo Completo</h4>
+            <p>Suponha que você tenha um controlador que precisa de um serviço para buscar informações do usuário:</p>
+            <div class="example">
+                <pre><code>class UserProfileController {
+    private $userService;
+
+    public function __construct(UserService $userService) {
+        $this->userService = $userService;
+    }
+
+    public function show() {
+        $userData = $this->userService->getUserData();
+        // Renderizar a view com os dados do usuário
+    }
+}</code></pre>
+            </div>
+            <p>Ao registrar a rota, você injeta a instância de <code>UserService</code> automaticamente:</p>
+            <div class="example">
+                <pre><code>SysRouter::get('/profile', 'UserProfileController@show', [new UserService()])->name('profile.show');</code></pre>
+            </div>
+
+            <h3>3. Validação de Parâmetros</h3>
+            <p>O sistema valida os parâmetros das rotas para garantir que estejam corretos:</p>
+            <div class="example">
+                <pre><code>SysRouter::get('/user/{id}', 'UserController@show')->name('user.show');</code></pre>
+                <p>Se a URL não corresponder ao formato esperado, uma exceção será lançada.</p>
+            </div>
+
+            <h3>4. Cache de Rotas</h3>
+            <p>Para melhorar o desempenho, você pode usar o cache de rotas. Isso armazena as rotas em um arquivo e as carrega rapidamente:</p>
+            <h4>Gerar o Cache</h4>
+            <div class="example">
+                <pre><code>SysRouter::cacheRoutes();</code></pre>
+            </div>
+            <h4>Carregar o Cache</h4>
+            <div class="example">
+                <pre><code>SysRouter::loadRoutesFromCache();</code></pre>
+            </div>
+            <h4>Configuração do Cache</h4>
+            <div class="example">
+                <pre><code>SysRouter::setCacheFile(__DIR__ . '/../cache/routes.php');</code></pre>
+            </div>
+
+            <h3>5. Proteção Contra Roteamento Inseguro</h3>
+            <p>O <strong>SysRouter</strong> implementa proteção contra roteamento inseguro para evitar injeção de código e acesso não autorizado:</p>
+            <div class="example">
+                <pre><code>SysRouter::setAllowedMethods(['GET', 'POST', 'PUT', 'DELETE']);</code></pre>
+            </div>
+
+            <h3>6. Log de Erros</h3>
+            <p>O sistema registra erros e informações de depuração, incluindo IP, data e hora da requisição:</p>
+            <div class="example">
+                <pre><code>SysRouter::error(function() {
+    $logMessage = sprintf(
+        "[%s] IP: %s ROUTE: %s ERROR: %s\n",
+        date('Y-m-d H:i:s'),
+        $_SERVER['REMOTE_ADDR'],
+        $_SERVER['REQUEST_URI'],
+        'Oops! Página não encontrada.'
+    );
+    file_put_contents(__DIR__ . '/../logs/router.log', $logMessage, FILE_APPEND);
+    http_response_code(404);
+    echo "Oops! Página não encontrada.";
+});</code></pre>
+            </div>
+
+            <h3>7. Nomeando Rotas</h3>
+            <p>O método <code>->name('nome_da_rota')</code> permite atribuir um nome a uma rota, facilitando a referência a ela em outras partes da aplicação. O nome da rota é usado para gerar URLs e para referenciar rotas de maneira mais intuitiva.</p>
+            <h4>Como Funciona</h4>
+            <p>Ao definir uma rota, você pode usar o método <code>name</code> para atribuir um nome a ela. Esse nome pode ser usado em vez do caminho da rota ao gerar URLs:</p>
+            <div class="example">
+                <pre><code>SysRouter::get('/profile', 'UserProfileController@show')->name('profile.show');</code></pre>
+            </div>
+            <p>Para gerar uma URL para uma rota nomeada:</p>
+            <div class="example">
+                <pre><code>$url = SysRouter::route('profile.show'); // Gera a URL para a rota nomeada 'profile.show'</code></pre>
+            </div>
+            
+                <p>Você pode passar parâmetros dinâmicos ao gerar a URL:</p>
+                <div class="example">
+                    <pre><code>$url = SysRouter::route('user.show', ['id' => 123]); // Gera a URL para a rota nomeada 'user.show' com o parâmetro 'id' definido como 123</code></pre>
+                </div>
+                <p>Isso gera uma URL completa com base no nome da rota e nos parâmetros fornecidos, facilitando a construção de links em sua aplicação.</p>
+
+                <h2>Exemplo Completo</h2>
+                <p>Aqui está um exemplo completo de uso do <strong>SysRouter</strong> com todas as funcionalidades descritas:</p>
+                <div class="example">
+                    <pre><code>// Definindo rotas
+SysRouter::get('/home', 'HomeController@index')->name('home.index');
+SysRouter::post('/submit', 'FormController@submit')->name('form.submit');
+SysRouter::put('/update/{id}', 'UpdateController@update')->name('update.record');
+SysRouter::delete('/delete/{id}', 'DeleteController@delete')->name('delete.record');
+
+// Definindo rota com injeção de dependências
+SysRouter::get('/profile', 'UserProfileController@show', [new UserService()])->name('profile.show');
+
+// Cache de rotas
+SysRouter::cacheRoutes(); // Gera o cache
+SysRouter::loadRoutesFromCache(); // Carrega o cache
+
+// Proteção contra roteamento inseguro
+SysRouter::setAllowedMethods(['GET', 'POST', 'PUT', 'DELETE']);
+
+// Configurando log de erros
+SysRouter::error(function() {
+    $logMessage = sprintf(
+        "[%s] IP: %s ROUTE: %s ERROR: %s\n",
+        date('Y-m-d H:i:s'),
+        $_SERVER['REMOTE_ADDR'],
+        $_SERVER['REQUEST_URI'],
+        'Oops! Página não encontrada.'
+    );
+    file_put_contents(__DIR__ . '/../logs/router.log', $logMessage, FILE_APPEND);
+    http_response_code(404);
+    echo "Oops! Página não encontrada.";
+});</code></pre>
+                </div>
+
+                <h2>Conclusão</h2>
+                <p>O <strong>SysRouter</strong> oferece uma solução robusta e flexível para roteamento em aplicações PHP. Com suporte para definição de rotas, injeção de dependências, validação de parâmetros, cache de rotas e muito mais, ele pode ser adaptado para atender às suas necessidades específicas. Esperamos que este tutorial tenha ajudado a entender como utilizar o <strong>SysRouter</strong> em seus projetos.</p>
+
+                <footer class="text-center mt-4">
+                    <p>&copy; 2025 SysFramework. Todos os direitos reservados.</p>
+                </footer>
+            </div>
+        </div>
+
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+    </body>
+</html>

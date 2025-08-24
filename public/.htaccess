@@ -1,0 +1,32 @@
+Options All -Indexes
+
+php_value memory_limit 768M
+php_flag register_long_arrays on
+#php_value post_max_size 100M
+#php_value upload_max_size 64M
+#php_value max_execution_time 300
+#php_value max_input_time 300
+#php_value upload_max_filesize 64M
+#php_flag short_open_tag on
+php_value date.timezone 'America/Sao_Paulo'
+php_value default_charset 'UTF-8'
+
+php_value max_file_uploads 2000
+
+#php_value extension fileinfo.so
+
+php_flag display_errors on
+php_value error_reporting -1
+
+#php_value session.gc_maxlifetime 1400
+
+
+
+
+RewriteEngine on
+RewriteCond %{SCRIPT_FILENAME} !-f
+RewriteCond %{SCRIPT_FILENAME} !-d
+RewriteCond %{SCRIPT_FILENAME} !-l
+RewriteRule ^(.*)$ index.php/$1
+
+
