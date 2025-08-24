@@ -82,7 +82,7 @@ position: fixed;
     <!-- Footer -->
     <footer class="footer bg-dark text-white text-center py-3 navbar-fixed-bottom">
         <div class="container mt-3">
-            <p class="mb-0">&copy; {{ date('Y') }} SysFramework VS. 1.0 - All rights reserved.</p>
+            <p class="mb-0">&copy; {{ date('Y') }} SysFramework VS. 1.0 - All rights reserved under the MIT License.</p>
         </div>
     </footer>
     
