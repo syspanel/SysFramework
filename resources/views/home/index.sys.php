@@ -128,7 +128,7 @@
     </div>
 
     <footer class="pt-3 mt-4 text-muted border-top">
-      &copy; 2025 SysFramework Versão 1.0 Todos os direitos reservados
+      &copy; 2025 SysFramework Versão 1.0 All rights reserved under the MIT License.
     </footer>
   </div>
 </main>
