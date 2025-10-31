@@ -1,0 +1,99 @@
+[2025-10-31 19:46:20] [INFO] [IP: 172.17.0.1] (home.index) - Loading the home page.
+[2025-10-31 19:46:23] [INFO] [IP: 172.17.0.1] (home.index) - Loading the home page.
+[2025-10-31 19:46:45] [INFO] [IP: 172.17.0.1] (home.index) - Loading the home page.
+[2025-10-31 19:46:48] [INFO] [IP: 172.17.0.1] (locale.setLocale) - Locale set to en_US
+[2025-10-31 19:46:50] [INFO] [IP: 172.17.0.1] (locale.setLocale) - Locale set to es_ES
+[2025-10-31 19:46:52] [INFO] [IP: 172.17.0.1] (locale.setLocale) - Locale set to fr_FR
+[2025-10-31 19:46:54] [INFO] [IP: 172.17.0.1] (home.index) - Loading the home page.
+[2025-10-31 19:46:59] [INFO] [IP: 172.17.0.1] (home.userguide) - Accessing the user guide.
+[2025-10-31 19:47:01] [INFO] [IP: 172.17.0.1] (home.index) - Loading the home page.
+[2025-10-31 19:47:05] [INFO] [IP: 172.17.0.1] (locale.setLocale) - Locale set to pt_BR
+[2025-10-31 19:47:07] [INFO] [IP: 172.17.0.1] (home.index) - Loading the home page.
+[2025-10-31 19:47:09] [INFO] [IP: 172.17.0.1] (clients.index) - Loading client list.
+[2025-10-31 19:51:14] [INFO] [IP: 172.17.0.1] (home.index) - Loading the home page.
+[2025-10-31 19:51:16] [INFO] [IP: 172.17.0.1] (home.index) - Loading the home page.
+[2025-10-31 19:51:17] [INFO] [IP: 172.17.0.1] (clients.index) - Loading client list.
+[2025-10-31 19:51:51] [INFO] [IP: 172.17.0.1] (clients.index) - Loading client list.
+[2025-10-31 19:52:04] [INFO] [IP: 172.17.0.1] (clients.index) - Loading client list.
+[2025-10-31 19:53:51] [INFO] [IP: 172.17.0.1] (clients.index) - Loading client list.
+[2025-10-31 20:01:42] [INFO] [IP: 172.17.0.1] (home.index) - Loading the home page.
+[2025-10-31 20:01:43] [INFO] [IP: 172.17.0.1] (clients.index) - Loading client list.
+[2025-10-31 20:01:47] [INFO] [IP: 172.17.0.1] (clients.index) - Loading client list.
+[2025-10-31 20:05:30] [INFO] [IP: 172.17.0.1] (home.index) - Loading the home page.
+[2025-10-31 20:05:32] [INFO] [IP: 172.17.0.1] (home.index) - Loading the home page.
+[2025-10-31 20:06:43] [INFO] [IP: 172.17.0.1] (home.index) - Loading the home page.
+[2025-10-31 20:06:46] [INFO] [IP: 172.17.0.1] (auth.login) - Login form.
+[2025-10-31 20:12:15] [INFO] [IP: 172.17.0.1] (auth.login) - Login form.
+[2025-10-31 20:12:19] [INFO] [IP: 172.17.0.1] (auth.gologin) - Successful login for: marcocosta@gmx.com
+[2025-10-31 20:12:19] [WARNING] [IP: 172.17.0.1] /assets/dashboard/')%20%7D%7D - Page not found.
+[2025-10-31 20:12:19] [WARNING] [IP: 172.17.0.1] /img/undraw_profile_3.svg - Page not found.
+[2025-10-31 20:12:19] [WARNING] [IP: 172.17.0.1] /img/undraw_profile_1.svg - Page not found.
+[2025-10-31 20:12:19] [WARNING] [IP: 172.17.0.1] /img/undraw_profile.svg - Page not found.
+[2025-10-31 20:12:19] [WARNING] [IP: 172.17.0.1] /img/undraw_posting_photo.svg - Page not found.
+[2025-10-31 20:12:19] [WARNING] [IP: 172.17.0.1] /img/undraw_rocket.svg - Page not found.
+[2025-10-31 20:12:19] [WARNING] [IP: 172.17.0.1] /img/undraw_profile_2.svg - Page not found.
+[2025-10-31 20:12:54] [INFO] [IP: 172.17.0.1] (auth.login) - Login form.
+[2025-10-31 20:12:57] [INFO] [IP: 172.17.0.1] (auth.register) - Registration form.
+[2025-10-31 20:12:58] [INFO] [IP: 172.17.0.1] (auth.login) - Login form.
+[2025-10-31 20:13:02] [INFO] [IP: 172.17.0.1] (auth.register) - Registration form.
+[2025-10-31 20:13:04] [INFO] [IP: 172.17.0.1] (home.index) - Loading the home page.
+[2025-10-31 20:14:34] [INFO] [IP: 172.17.0.1] (home.index) - Loading the home page.
+[2025-10-31 20:14:36] [INFO] [IP: 172.17.0.1] (auth.login) - Login form.
+[2025-10-31 20:14:41] [INFO] [IP: 172.17.0.1] (home.index) - Loading the home page.
+[2025-10-31 20:14:48] [INFO] [IP: 172.17.0.1] (home.index) - Loading the home page.
+[2025-10-31 20:14:49] [INFO] [IP: 172.17.0.1] (home.index) - Loading the home page.
+[2025-10-31 20:14:51] [INFO] [IP: 172.17.0.1] (auth.login) - Login form.
+[2025-10-31 20:14:58] [INFO] [IP: 172.17.0.1] (auth.gologin) - Successful login for: marcocosta@gmx.com
+[2025-10-31 20:14:58] [WARNING] [IP: 172.17.0.1] /img/undraw_rocket.svg - Page not found.
+[2025-10-31 20:14:58] [WARNING] [IP: 172.17.0.1] /img/undraw_profile_1.svg - Page not found.
+[2025-10-31 20:14:58] [WARNING] [IP: 172.17.0.1] /img/undraw_profile_2.svg - Page not found.
+[2025-10-31 20:14:58] [WARNING] [IP: 172.17.0.1] /img/undraw_profile_3.svg - Page not found.
+[2025-10-31 20:14:58] [WARNING] [IP: 172.17.0.1] /img/undraw_posting_photo.svg - Page not found.
+[2025-10-31 20:14:58] [WARNING] [IP: 172.17.0.1] /assets/dashboard/')%20%7D%7D - Page not found.
+[2025-10-31 20:14:58] [WARNING] [IP: 172.17.0.1] /img/undraw_profile.svg - Page not found.
+[2025-10-31 20:15:00] [INFO] [IP: 172.17.0.1] (auth.logout) - Successful logout for: marcocosta@gmx.com
+[2025-10-31 20:15:00] [INFO] [IP: 172.17.0.1] (home.index) - Loading the home page.
+[2025-10-31 20:15:06] [INFO] [IP: 172.17.0.1] (home.index) - Loading the home page.
+[2025-10-31 20:15:08] [INFO] [IP: 172.17.0.1] (auth.login) - Login form.
+[2025-10-31 20:15:11] [INFO] [IP: 172.17.0.1] (auth.gologin) - Successful login for: marcocosta@gmx.com
+[2025-10-31 20:15:11] [WARNING] [IP: 172.17.0.1] /img/undraw_rocket.svg - Page not found.
+[2025-10-31 20:15:11] [WARNING] [IP: 172.17.0.1] /img/undraw_profile_1.svg - Page not found.
+[2025-10-31 20:15:11] [WARNING] [IP: 172.17.0.1] /img/undraw_profile_2.svg - Page not found.
+[2025-10-31 20:15:11] [WARNING] [IP: 172.17.0.1] /img/undraw_profile.svg - Page not found.
+[2025-10-31 20:15:11] [WARNING] [IP: 172.17.0.1] /img/undraw_profile_3.svg - Page not found.
+[2025-10-31 20:15:11] [WARNING] [IP: 172.17.0.1] /img/undraw_posting_photo.svg - Page not found.
+[2025-10-31 20:15:11] [WARNING] [IP: 172.17.0.1] /assets/dashboard/')%20%7D%7D - Page not found.
+[2025-10-31 20:15:13] [INFO] [IP: 172.17.0.1] (home.index) - Loading the home page.
+[2025-10-31 20:16:21] [WARNING] [IP: 172.17.0.1] /admin/img/undraw_profile_1.svg - Page not found.
+[2025-10-31 20:16:21] [WARNING] [IP: 172.17.0.1] /admin/img/undraw_rocket.svg - Page not found.
+[2025-10-31 20:16:21] [WARNING] [IP: 172.17.0.1] /admin/img/undraw_profile_2.svg - Page not found.
+[2025-10-31 20:16:21] [WARNING] [IP: 172.17.0.1] /admin/img/undraw_profile_3.svg - Page not found.
+[2025-10-31 20:16:21] [WARNING] [IP: 172.17.0.1] /admin/img/undraw_profile.svg - Page not found.
+[2025-10-31 20:16:21] [WARNING] [IP: 172.17.0.1] /admin/img/undraw_posting_photo.svg - Page not found.
+[2025-10-31 20:16:21] [WARNING] [IP: 172.17.0.1] /assets/dashboard/')%20%7D%7D - Page not found.
+[2025-10-31 20:16:24] [INFO] [IP: 172.17.0.1] (home.index) - Loading the home page.
+[2025-10-31 20:16:28] [INFO] [IP: 172.17.0.1] (auth.login) - Login form.
+[2025-10-31 20:16:31] [INFO] [IP: 172.17.0.1] (auth.gologin) - Successful login for: marcocosta@gmx.com
+[2025-10-31 20:16:31] [WARNING] [IP: 172.17.0.1] /img/undraw_rocket.svg - Page not found.
+[2025-10-31 20:16:31] [WARNING] [IP: 172.17.0.1] /img/undraw_profile_1.svg - Page not found.
+[2025-10-31 20:16:31] [WARNING] [IP: 172.17.0.1] /img/undraw_profile_2.svg - Page not found.
+[2025-10-31 20:16:31] [WARNING] [IP: 172.17.0.1] /assets/dashboard/')%20%7D%7D - Page not found.
+[2025-10-31 20:16:31] [WARNING] [IP: 172.17.0.1] /img/undraw_profile_3.svg - Page not found.
+[2025-10-31 20:16:31] [WARNING] [IP: 172.17.0.1] /img/undraw_profile.svg - Page not found.
+[2025-10-31 20:16:31] [WARNING] [IP: 172.17.0.1] /img/undraw_posting_photo.svg - Page not found.
+[2025-10-31 20:16:34] [WARNING] [IP: 172.17.0.1] /admin/img/undraw_rocket.svg - Page not found.
+[2025-10-31 20:16:34] [WARNING] [IP: 172.17.0.1] /admin/img/undraw_profile_1.svg - Page not found.
+[2025-10-31 20:16:34] [WARNING] [IP: 172.17.0.1] /admin/img/undraw_profile_2.svg - Page not found.
+[2025-10-31 20:16:34] [WARNING] [IP: 172.17.0.1] /admin/img/undraw_profile_3.svg - Page not found.
+[2025-10-31 20:16:34] [WARNING] [IP: 172.17.0.1] /admin/img/undraw_profile.svg - Page not found.
+[2025-10-31 20:16:34] [WARNING] [IP: 172.17.0.1] /admin/img/undraw_posting_photo.svg - Page not found.
+[2025-10-31 20:16:34] [WARNING] [IP: 172.17.0.1] /assets/dashboard/')%20%7D%7D - Page not found.
+[2025-10-31 20:16:38] [INFO] [IP: 172.17.0.1] (auth.logout) - Successful logout for: marcocosta@gmx.com
+[2025-10-31 20:16:38] [INFO] [IP: 172.17.0.1] (home.index) - Loading the home page.
+[2025-10-31 20:16:40] [WARNING] [IP: 172.17.0.1] /admin/img/undraw_rocket.svg - Page not found.
+[2025-10-31 20:16:40] [WARNING] [IP: 172.17.0.1] /admin/img/undraw_profile_2.svg - Page not found.
+[2025-10-31 20:16:40] [WARNING] [IP: 172.17.0.1] /admin/img/undraw_profile.svg - Page not found.
+[2025-10-31 20:16:40] [WARNING] [IP: 172.17.0.1] /admin/img/undraw_profile_3.svg - Page not found.
+[2025-10-31 20:16:40] [WARNING] [IP: 172.17.0.1] /admin/img/undraw_profile_1.svg - Page not found.
+[2025-10-31 20:16:40] [WARNING] [IP: 172.17.0.1] /admin/img/undraw_posting_photo.svg - Page not found.
+[2025-10-31 20:16:40] [WARNING] [IP: 172.17.0.1] /assets/dashboard/')%20%7D%7D - Page not found.
